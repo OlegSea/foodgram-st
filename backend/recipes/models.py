@@ -2,8 +2,6 @@ from django.db import models
 
 
 class Ingredient(models.Model):
-    """Модель ингредиента."""
-
     name = models.CharField(
         max_length=128,
         verbose_name="Название",
