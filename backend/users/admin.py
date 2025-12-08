@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from .models import User
+from .models import Subscription, User
 
 
 @admin.register(User)
@@ -49,3 +49,10 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
     )
+
+
+@admin.register(Subscription)
+class SubscriptionAdmin(admin.ModelAdmin):
+    list_display = ("id", "user", "author", "created_at")
+    search_fields = ("user__username", "author__username")
+    list_filter = ("created_at",)
