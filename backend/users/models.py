@@ -81,3 +81,41 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(
+        "User",
+        on_delete=models.CASCADE,
+        related_name="subscriptions",
+        verbose_name="Подписчик",
+        db_index=True,
+    )
+    author = models.ForeignKey(
+        "User",
+        on_delete=models.CASCADE,
+        related_name="subscribers",
+        verbose_name="Автор",
+        db_index=True,
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Дата подписки",
+    )
+
+    class Meta:
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"
+        ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "author"], name="unique_subscription"
+            ),
+            models.CheckConstraint(
+                check=~models.Q(user=models.F("author")),
+                name="prevent_self_subscription",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.user.username} подписан на {self.author.username}"
