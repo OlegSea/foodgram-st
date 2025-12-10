@@ -3,6 +3,11 @@ from djoser.serializers import UserCreateSerializer as DjoserUserCreateSerialize
 from rest_framework import serializers
 
 from api.fields import Base64ImageField
+from api.validators import (
+    validate_cooking_time,
+    validate_ingredient_amount,
+    validate_ingredients_uniqueness,
+)
 from recipes.models import (
     Favorite,
     Ingredient,
@@ -41,6 +46,8 @@ class UserSerializer(serializers.ModelSerializer):
     def get_is_subscribed(self, obj):
         request = self.context.get("request")
         if request and request.user.is_authenticated:
+            if hasattr(obj, "is_subscribed_annotation"):
+                return obj.is_subscribed_annotation
             return obj.subscribers.filter(user=request.user).exists()
         return False
 
@@ -95,18 +102,11 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
 
 class RecipeIngredientCreateSerializer(serializers.Serializer):
     id = serializers.IntegerField()
-    amount = serializers.IntegerField()
+    amount = serializers.IntegerField(validators=[validate_ingredient_amount])
 
     def validate_id(self, value):
         if not Ingredient.objects.filter(id=value).exists():
             raise serializers.ValidationError(f"Ингредиент с id={value} не существует.")
-        return value
-
-    def validate_amount(self, value):
-        if value < 1:
-            raise serializers.ValidationError(
-                "Количество ингредиента должно быть не менее 1."
-            )
         return value
 
 
@@ -114,6 +114,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
     ingredients = RecipeIngredientCreateSerializer(many=True)
     image = Base64ImageField()
     author = UserSerializer(read_only=True)
+    cooking_time = serializers.IntegerField(validators=[validate_cooking_time])
 
     class Meta:
         model = Recipe
@@ -129,23 +130,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "author")
 
     def validate_ingredients(self, value):
-        if not value:
-            raise serializers.ValidationError(
-                "Необходимо добавить хотя бы один ингредиент."
-            )
-
-        ingredient_ids = [item["id"] for item in value]
-        if len(ingredient_ids) != len(set(ingredient_ids)):
-            raise serializers.ValidationError("Ингредиенты не должны повторяться.")
-
-        return value
-
-    def validate_cooking_time(self, value):
-        if value < 1:
-            raise serializers.ValidationError(
-                "Время приготовления должно быть не менее 1 минуты."
-            )
-        return value
+        return validate_ingredients_uniqueness(value)
 
     @transaction.atomic
     def create(self, validated_data):
@@ -220,12 +205,16 @@ class RecipeListSerializer(serializers.ModelSerializer):
     def get_is_favorited(self, obj):
         request = self.context.get("request")
         if request and request.user.is_authenticated:
+            if hasattr(obj, "is_favorited_annotation"):
+                return obj.is_favorited_annotation
             return Favorite.objects.filter(user=request.user, recipe=obj).exists()
         return False
 
     def get_is_in_shopping_cart(self, obj):
         request = self.context.get("request")
         if request and request.user.is_authenticated:
+            if hasattr(obj, "is_in_shopping_cart_annotation"):
+                return obj.is_in_shopping_cart_annotation
             return ShoppingCart.objects.filter(user=request.user, recipe=obj).exists()
         return False
 

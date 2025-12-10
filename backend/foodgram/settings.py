@@ -153,28 +153,29 @@ AUTH_USER_MODEL = "users.User"
 # Djoser settings
 DJOSER = {
     "SERIALIZERS": {
-        "user_create": "djoser.serializers.UserCreateSerializer",
-        "user": "djoser.serializers.UserSerializer",
-        "current_user": "djoser.serializers.UserSerializer",
-        "user_delete": "djoser.serializers.UserDeleteSerializer",
+        "user_create": "api.serializers.UserCreateSerializer",
+        "user": "api.serializers.UserSerializer",
+        "current_user": "api.serializers.UserSerializer",
     },
     "PERMISSIONS": {
         "activation": ["rest_framework.permissions.AllowAny"],
         "password_reset": ["rest_framework.permissions.AllowAny"],
         "password_reset_confirm": ["rest_framework.permissions.AllowAny"],
-        "set_password": ["djoser.permissions.CurrentUserOrAdmin"],
+        "set_password": ["rest_framework.permissions.IsAuthenticated"],
         "username_reset": ["rest_framework.permissions.AllowAny"],
         "username_reset_confirm": ["rest_framework.permissions.AllowAny"],
-        "set_username": ["djoser.permissions.CurrentUserOrAdmin"],
+        "set_username": ["rest_framework.permissions.IsAuthenticated"],
         "user_create": ["rest_framework.permissions.AllowAny"],
-        "user_delete": ["djoser.permissions.CurrentUserOrAdmin"],
-        "user": ["djoser.permissions.CurrentUserOrAdmin"],
-        "user_list": ["djoser.permissions.CurrentUserOrAdmin"],
+        "user_delete": ["rest_framework.permissions.IsAuthenticated"],
+        "user": ["rest_framework.permissions.IsAuthenticated"],
+        "user_list": ["rest_framework.permissions.IsAuthenticated"],
         "token_create": ["rest_framework.permissions.AllowAny"],
         "token_destroy": ["rest_framework.permissions.IsAuthenticated"],
     },
     "HIDE_USERS": False,
     "LOGIN_FIELD": "email",
+    "SEND_ACTIVATION_EMAIL": False,
+    "SEND_CONFIRMATION_EMAIL": False,
 }
 
 # Django REST Framework settings
@@ -183,9 +184,9 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "DEFAULT_PAGINATION_CLASS": "api.pagination.CustomPageNumberPagination",
     "PAGE_SIZE": 6,
     "DEFAULT_FILTER_BACKENDS": [
         "django_filters.rest_framework.DjangoFilterBackend",
