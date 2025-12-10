@@ -8,15 +8,16 @@ RUN apt-get update && apt-get install -y \
     netcat-openbsd \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install --no-cache-dir gunicorn
 
-COPY . .
+COPY backend/ .
+COPY data/ /data/
 
 RUN mkdir -p /app/static /app/media
 
-COPY run.sh /run.sh
+COPY backend/run.sh /run.sh
 RUN chmod +x /run.sh
 
 EXPOSE 8000

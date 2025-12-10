@@ -21,7 +21,9 @@ services:
 
   backend:
     container_name: foodgram-backend
-    build: ../backend
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
     restart: always
     volumes:
       - static_volume:/app/static/
@@ -31,9 +33,6 @@ services:
         condition: service_healthy
     env_file:
       - .env
-    environment:
-      - DEBUG=False
-      - USE_POSTGRES=True
     expose:
       - "8000"
 

@@ -1,20 +1,29 @@
 #!/bin/bash
 
-# Закрываться при ошибке
 set -e
 
 python manage.py migrate --noinput
 
 python manage.py collectstatic --noinput
 
+python manage.py load_ingredients
+
 python manage.py shell -c "
 from django.contrib.auth import get_user_model
+from django.db import IntegrityError
+
 User = get_user_model()
-if not User.objects.filter(username='admin').exists():
-    User.objects.create_superuser('admin', 'admin@example.com', 'admin')
-    print('Superuser created: admin/admin')
-else:
-    print('Superuser already exists')
+
+try:
+    if not User.objects.filter(username='admin').exists() and not User.objects.filter(email='admin@example.com').exists():
+        User.objects.create_superuser('admin', 'admin@example.com', 'admin')
+        print('Superuser created: admin/admin')
+    else:
+        print('Superuser already exists')
+except IntegrityError as e:
+    print(f'Superuser creation skipped: {e}')
+except Exception as e:
+    print(f'Error creating superuser: {e}')
 "
 
 if [ "$DEBUG" = "True" ]; then

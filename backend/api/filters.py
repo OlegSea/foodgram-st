@@ -33,8 +33,8 @@ class RecipeFilter(django_filters.FilterSet):
             return queryset
 
         if value == 1:
-            return queryset.filter(in_shopping_cart__user=user)
+            return queryset.filter(in_shopping_carts__user=user)
         elif value == 0:
-            return queryset.exclude(in_shopping_cart__user=user)
+            return queryset.exclude(in_shopping_carts__user=user)
 
         return queryset

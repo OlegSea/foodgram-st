@@ -11,9 +11,13 @@ class Command(BaseCommand):
     help = "Загрузка ингредиентов из JSON файла"
 
     def handle(self, *args, **options):
-        json_file_path = os.path.join(
-            settings.BASE_DIR.parent, "data", "ingredients.json"
-        )
+        docker_path = "/data/ingredients.json"
+        local_path = os.path.join(settings.BASE_DIR.parent, "data", "ingredients.json")
+
+        if os.path.exists(docker_path):
+            json_file_path = docker_path
+        else:
+            json_file_path = local_path
 
         try:
             if not os.path.exists(json_file_path):

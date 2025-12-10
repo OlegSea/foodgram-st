@@ -135,9 +135,8 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         ingredients_data = validated_data.pop("ingredients")
-        author = self.context["request"].user
 
-        recipe = Recipe.objects.create(author=author, **validated_data)
+        recipe = Recipe.objects.create(**validated_data)
 
         recipe_ingredients = []
         for ingredient_data in ingredients_data:
@@ -151,6 +150,9 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         RecipeIngredient.objects.bulk_create(recipe_ingredients)
 
         return recipe
+
+    def to_representation(self, instance):
+        return RecipeListSerializer(instance, context=self.context).data
 
 
 class RecipeUpdateSerializer(RecipeCreateSerializer):
@@ -177,6 +179,9 @@ class RecipeUpdateSerializer(RecipeCreateSerializer):
             RecipeIngredient.objects.bulk_create(recipe_ingredients)
 
         return instance
+
+    def to_representation(self, instance):
+        return RecipeListSerializer(instance, context=self.context).data
 
 
 class RecipeListSerializer(serializers.ModelSerializer):
