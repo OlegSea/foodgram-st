@@ -4,7 +4,13 @@ from django.db import models
 
 class UserManager(BaseUserManager):
     def create_user(
-        self, email, username, first_name, last_name, password=None, **extra_fields
+        self,
+        email,
+        username,
+        first_name="",
+        last_name="",
+        password=None,
+        **extra_fields,
     ):
         if not email:
             raise ValueError("Email адрес обязателен")
@@ -24,7 +30,13 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(
-        self, email, username, first_name, last_name, password=None, **extra_fields
+        self,
+        email,
+        username,
+        first_name="",
+        last_name="",
+        password=None,
+        **extra_fields,
     ):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
