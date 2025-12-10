@@ -31,7 +31,7 @@ class RecipeAlreadyInFavoritesError(AlreadyExistsError):
     default_code = "recipe_already_in_favorites"
 
 
-class RecipeNotInFavoritesError(NotFoundError):
+class RecipeNotInFavoritesError(ValidationError):
     default_detail = "Рецепт не в избранном."
     default_code = "recipe_not_in_favorites"
 
@@ -41,7 +41,7 @@ class RecipeAlreadyInShoppingCartError(AlreadyExistsError):
     default_code = "recipe_already_in_shopping_cart"
 
 
-class RecipeNotInShoppingCartError(NotFoundError):
+class RecipeNotInShoppingCartError(ValidationError):
     default_detail = "Рецепт не в списке покупок."
     default_code = "recipe_not_in_shopping_cart"
 
@@ -51,7 +51,7 @@ class AlreadySubscribedError(AlreadyExistsError):
     default_code = "already_subscribed"
 
 
-class NotSubscribedError(NotFoundError):
+class NotSubscribedError(ValidationError):
     default_detail = "Вы не подписаны на этого автора."
     default_code = "not_subscribed"
 

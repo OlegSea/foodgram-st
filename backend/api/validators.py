@@ -1,4 +1,18 @@
+import re
+
 from rest_framework import serializers
+
+
+def validate_username(value):
+    if not re.match(r"^[\w.@+-]+\Z", value):
+        raise serializers.ValidationError(
+            "Username может содержать только буквы, цифры и символы @/./+/-/_."
+        )
+    if value.lower() == "me":
+        raise serializers.ValidationError(
+            "Использовать имя 'me' в качестве username запрещено."
+        )
+    return value
 
 
 def validate_ingredients_uniqueness(ingredients_data):

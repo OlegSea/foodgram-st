@@ -7,6 +7,7 @@ from api.validators import (
     validate_cooking_time,
     validate_ingredient_amount,
     validate_ingredients_uniqueness,
+    validate_username,
 )
 from recipes.models import (
     Favorite,
@@ -53,6 +54,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserCreateSerializer(DjoserUserCreateSerializer):
+    username = serializers.CharField(max_length=150, validators=[validate_username])
+
     class Meta:
         model = User
         fields = (
@@ -67,6 +70,20 @@ class UserCreateSerializer(DjoserUserCreateSerializer):
             "password": {"write_only": True},
         }
 
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exists():
+            raise serializers.ValidationError(
+                "Пользователь с таким username уже существует."
+            )
+        return validate_username(value)
+
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError(
+                "Пользователь с таким email уже существует."
+            )
+        return value
+
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         return user
@@ -78,6 +95,13 @@ class SetAvatarSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("avatar",)
+
+    def validate(self, data):
+        if "avatar" not in data or data["avatar"] is None:
+            raise serializers.ValidationError(
+                {"avatar": "Поле avatar обязательно для заполнения."}
+            )
+        return data
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -156,6 +180,20 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
 
 
 class RecipeUpdateSerializer(RecipeCreateSerializer):
+    ingredients = RecipeIngredientCreateSerializer(many=True, required=True)
+
+    def validate(self, data):
+        if "ingredients" not in data:
+            raise serializers.ValidationError({"ingredients": "Это поле обязательно."})
+        return data
+
+    def validate_ingredients(self, value):
+        if not value:
+            raise serializers.ValidationError(
+                "Необходимо добавить хотя бы один ингредиент."
+            )
+        return validate_ingredients_uniqueness(value)
+
     @transaction.atomic
     def update(self, instance, validated_data):
         ingredients_data = validated_data.pop("ingredients", None)
@@ -290,14 +328,19 @@ class SubscriptionCreateSerializer(serializers.ModelSerializer):
 
 
 class ShortLinkSerializer(serializers.ModelSerializer):
-    short_link = serializers.SerializerMethodField()
-
     class Meta:
         model = ShortLink
-        fields = ("short-link",)
+        fields = ("short_link",)
+
+    short_link = serializers.SerializerMethodField(method_name="get_short_link")
 
     def get_short_link(self, obj):
         request = self.context.get("request")
         if request:
-            return request.build_absolute_uri(f"/s/{obj.short_code}")
-        return f"/s/{obj.short_code}"
+            return request.build_absolute_uri(f"/s/{obj.short_code}/")
+        return f"/s/{obj.short_code}/"
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret["short-link"] = ret.pop("short_link")
+        return ret
