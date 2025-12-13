@@ -1,0 +1,35 @@
+name: Линт, формат
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  backend-lint:
+    name: Линтер для бэкенда
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Чекаут
+        uses: actions/checkout@v4
+
+      - name: Настройка питона
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Зависимости
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff
+
+      - name: Ruff (линтер)
+        run: ruff check . --output-format=github
+
+      - name: Ruff (формат)
+        run: ruff format --check --diff 

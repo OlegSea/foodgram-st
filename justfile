@@ -1,15 +1,11 @@
-alias d := down
-alias b := build
-alias r := run
-
 build:
-    cd infra && docker compose up --build
+    cd infra && docker compose -f docker-compose.local.yml up --build
 
 run:
     cd infra && docker compose up
 
 down:
-    cd infra && docker compose down
+    cd infra && docker compose down && docker compose -f docker-compose.local.yml down
 
 prune:
-    cd infra && docker volume prune
+    docker volume prune

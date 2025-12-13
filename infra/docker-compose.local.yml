@@ -17,7 +17,9 @@ services:
 
   backend:
     container_name: foodgram-backend
-    image: olegsea/foodgram-backend:latest
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
     restart: always
     volumes:
       - static_volume:/app/static/
@@ -32,7 +34,9 @@ services:
 
   frontend:
     container_name: foodgram-front
-    image: olegsea/foodgram-frontend:latest
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
     volumes:
       - frontend_build:/app/result_build/
 
