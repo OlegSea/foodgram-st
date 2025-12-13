@@ -54,7 +54,9 @@ def validate_ingredient_amount(value):
 
 def validate_tag_uniqueness(tags_data):
     if not tags_data:
-        raise serializers.ValidationError("Необходимо добавить хотя бы один тег.")
+        raise serializers.ValidationError(
+            "Необходимо добавить хотя бы один тег."
+        )
 
     tag_ids = [tag.id if hasattr(tag, "id") else tag for tag in tags_data]
     if len(tag_ids) != len(set(tag_ids)):

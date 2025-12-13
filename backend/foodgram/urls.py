@@ -25,13 +25,19 @@ from recipes.views import short_link_redirect
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("api.urls")),
-    path("s/<str:short_code>/", short_link_redirect, name="short_link_redirect"),
+    path(
+        "s/<str:short_code>/", short_link_redirect, name="short_link_redirect"
+    ),
 ]
 
 # Serve media files during development
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+    )
+    urlpatterns += static(
+        settings.STATIC_URL, document_root=settings.STATIC_ROOT
+    )
 
 # Configure admin site titles
 admin.site.site_header = "Foodgram Administration"

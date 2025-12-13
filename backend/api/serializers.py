@@ -1,5 +1,7 @@
 from django.db import transaction
-from djoser.serializers import UserCreateSerializer as DjoserUserCreateSerializer
+from djoser.serializers import (
+    UserCreateSerializer as DjoserUserCreateSerializer,
+)
 from rest_framework import serializers
 
 from api.fields import Base64ImageField
@@ -54,7 +56,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserCreateSerializer(DjoserUserCreateSerializer):
-    username = serializers.CharField(max_length=150, validators=[validate_username])
+    username = serializers.CharField(
+        max_length=150, validators=[validate_username]
+    )
 
     class Meta:
         model = User
@@ -130,7 +134,9 @@ class RecipeIngredientCreateSerializer(serializers.Serializer):
 
     def validate_id(self, value):
         if not Ingredient.objects.filter(id=value).exists():
-            raise serializers.ValidationError(f"Ингредиент с id={value} не существует.")
+            raise serializers.ValidationError(
+                f"Ингредиент с id={value} не существует."
+            )
         return value
 
 
@@ -184,7 +190,9 @@ class RecipeUpdateSerializer(RecipeCreateSerializer):
 
     def validate(self, data):
         if "ingredients" not in data:
-            raise serializers.ValidationError({"ingredients": "Это поле обязательно."})
+            raise serializers.ValidationError(
+                {"ingredients": "Это поле обязательно."}
+            )
         return data
 
     def validate_ingredients(self, value):
@@ -250,7 +258,9 @@ class RecipeListSerializer(serializers.ModelSerializer):
         if request and request.user.is_authenticated:
             if hasattr(obj, "is_favorited_annotation"):
                 return obj.is_favorited_annotation
-            return Favorite.objects.filter(user=request.user, recipe=obj).exists()
+            return Favorite.objects.filter(
+                user=request.user, recipe=obj
+            ).exists()
         return False
 
     def get_is_in_shopping_cart(self, obj):
@@ -258,7 +268,9 @@ class RecipeListSerializer(serializers.ModelSerializer):
         if request and request.user.is_authenticated:
             if hasattr(obj, "is_in_shopping_cart_annotation"):
                 return obj.is_in_shopping_cart_annotation
-            return ShoppingCart.objects.filter(user=request.user, recipe=obj).exists()
+            return ShoppingCart.objects.filter(
+                user=request.user, recipe=obj
+            ).exists()
         return False
 
 
@@ -303,7 +315,9 @@ class UserWithRecipesSerializer(UserSerializer):
             except (ValueError, TypeError):
                 pass
 
-        return RecipeMinifiedSerializer(recipes, many=True, context=self.context).data
+        return RecipeMinifiedSerializer(
+            recipes, many=True, context=self.context
+        ).data
 
     def get_recipes_count(self, obj):
         return obj.recipes.count()
@@ -319,10 +333,14 @@ class SubscriptionCreateSerializer(serializers.ModelSerializer):
         author = data.get("author")
 
         if user == author:
-            raise serializers.ValidationError("Нельзя подписаться на самого себя.")
+            raise serializers.ValidationError(
+                "Нельзя подписаться на самого себя."
+            )
 
         if Subscription.objects.filter(user=user, author=author).exists():
-            raise serializers.ValidationError("Вы уже подписаны на этого автора.")
+            raise serializers.ValidationError(
+                "Вы уже подписаны на этого автора."
+            )
 
         return data
 
@@ -332,7 +350,9 @@ class ShortLinkSerializer(serializers.ModelSerializer):
         model = ShortLink
         fields = ("short_link",)
 
-    short_link = serializers.SerializerMethodField(method_name="get_short_link")
+    short_link = serializers.SerializerMethodField(
+        method_name="get_short_link"
+    )
 
     def get_short_link(self, obj):
         request = self.context.get("request")

@@ -44,7 +44,9 @@ class UserManager(BaseUserManager):
         if extra_fields.get("is_staff") is not True:
             raise ValueError("Суперпользователь должен иметь is_staff=True.")
         if extra_fields.get("is_superuser") is not True:
-            raise ValueError("Суперпользователь должен иметь is_superuser=True.")
+            raise ValueError(
+                "Суперпользователь должен иметь is_superuser=True."
+            )
 
         return self.create_user(
             email, username, first_name, last_name, password, **extra_fields
@@ -67,7 +69,9 @@ class User(AbstractUser):
         "Только буквы, цифры и символы @/./+/-/_.",
     )
 
-    first_name = models.CharField("Имя", max_length=150, help_text="Имя пользователя")
+    first_name = models.CharField(
+        "Имя", max_length=150, help_text="Имя пользователя"
+    )
 
     last_name = models.CharField(
         "Фамилия", max_length=150, help_text="Фамилия пользователя"

@@ -89,7 +89,8 @@ class RecipeIngredient(models.Model):
         verbose_name_plural = "Ингредиенты в рецептах"
         constraints = [
             models.UniqueConstraint(
-                fields=["recipe", "ingredient"], name="unique_recipe_ingredient"
+                fields=["recipe", "ingredient"],
+                name="unique_recipe_ingredient",
             )
         ]
 
@@ -121,7 +122,9 @@ class Favorite(models.Model):
         verbose_name_plural = "Избранное"
         ordering = ["-added_at"]
         constraints = [
-            models.UniqueConstraint(fields=["user", "recipe"], name="unique_favorite")
+            models.UniqueConstraint(
+                fields=["user", "recipe"], name="unique_favorite"
+            )
         ]
 
     def __str__(self):
@@ -158,7 +161,9 @@ class ShoppingCart(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.user.username} добавил {self.recipe.name} в список покупок"
+        return (
+            f"{self.user.username} добавил {self.recipe.name} в список покупок"
+        )
 
 
 class ShortLink(models.Model):
@@ -192,6 +197,8 @@ class ShortLink(models.Model):
         import string
 
         while True:
-            code = "".join(random.choices(string.ascii_letters + string.digits, k=6))
+            code = "".join(
+                random.choices(string.ascii_letters + string.digits, k=6)
+            )
             if not ShortLink.objects.filter(short_code=code).exists():
                 return code

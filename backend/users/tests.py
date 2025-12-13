@@ -52,7 +52,9 @@ class UserModelTest(TestCase):
         with self.assertRaises(ValueError) as context:
             User.objects.create_user(**user_data)
 
-        self.assertEqual(str(context.exception), "Имя пользователя обязательно")
+        self.assertEqual(
+            str(context.exception), "Имя пользователя обязательно"
+        )
 
     def test_email_uniqueness(self):
         User.objects.create_user(**self.user_data)
@@ -94,13 +96,15 @@ class UserModelTest(TestCase):
         with self.assertRaises(ValueError) as context:
             User.objects.create_superuser(**self.user_data, is_staff=False)
         self.assertEqual(
-            str(context.exception), "Суперпользователь должен иметь is_staff=True."
+            str(context.exception),
+            "Суперпользователь должен иметь is_staff=True.",
         )
 
         with self.assertRaises(ValueError) as context:
             User.objects.create_superuser(**self.user_data, is_superuser=False)
         self.assertEqual(
-            str(context.exception), "Суперпользователь должен иметь is_superuser=True."
+            str(context.exception),
+            "Суперпользователь должен иметь is_superuser=True.",
         )
 
     def test_user_avatar_field(self):

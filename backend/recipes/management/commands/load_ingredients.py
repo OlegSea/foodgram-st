@@ -12,7 +12,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         docker_path = "/data/ingredients.json"
-        local_path = os.path.join(settings.BASE_DIR.parent, "data", "ingredients.json")
+        local_path = os.path.join(
+            settings.BASE_DIR.parent, "data", "ingredients.json"
+        )
 
         if os.path.exists(docker_path):
             json_file_path = docker_path
@@ -21,16 +23,19 @@ class Command(BaseCommand):
 
         try:
             if not os.path.exists(json_file_path):
-                self.stdout.write(self.style.ERROR(f"Файл {json_file_path} не найден!"))
+                self.stdout.write(
+                    self.style.ERROR(f"Файл {json_file_path} не найден!")
+                )
                 return
 
-            with open(json_file_path, "r", encoding="utf-8") as file:
+            with open(json_file_path, encoding="utf-8") as file:
                 ingredients_data = json.load(file)
 
             ingredients_to_create = []
             for item in ingredients_data:
                 if not Ingredient.objects.filter(
-                    name=item["name"], measurement_unit=item["measurement_unit"]
+                    name=item["name"],
+                    measurement_unit=item["measurement_unit"],
                 ).exists():
                     ingredients_to_create.append(
                         Ingredient(
@@ -48,11 +53,15 @@ class Command(BaseCommand):
                 )
             else:
                 self.stdout.write(
-                    self.style.WARNING("Все ингредиенты уже загружены в базу данных")
+                    self.style.WARNING(
+                        "Все ингредиенты уже загружены в базу данных"
+                    )
                 )
 
         except json.JSONDecodeError as e:
-            self.stdout.write(self.style.ERROR(f"Ошибка при парсинге JSON файла: {e}"))
+            self.stdout.write(
+                self.style.ERROR(f"Ошибка при парсинге JSON файла: {e}")
+            )
         except Exception as e:
             self.stdout.write(
                 self.style.ERROR(f"Произошла ошибка при загрузке данных: {e}")

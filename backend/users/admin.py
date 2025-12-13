@@ -6,7 +6,14 @@ from .models import Subscription, User
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    list_display = ("id", "username", "email", "first_name", "last_name", "is_staff")
+    list_display = (
+        "id",
+        "username",
+        "email",
+        "first_name",
+        "last_name",
+        "is_staff",
+    )
     list_display_links = ("id", "username")
     list_filter = ("is_staff", "is_superuser", "is_active", "date_joined")
     search_fields = ("username", "email", "first_name", "last_name")

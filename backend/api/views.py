@@ -1,4 +1,4 @@
-from django.db.models import Count, Exists, OuterRef, Prefetch
+from django.db.models import Exists, OuterRef, Prefetch
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet as DjoserUserViewSet
 from rest_framework import status, viewsets
@@ -24,11 +24,16 @@ from api.serializers import (
     RecipeListSerializer,
     RecipeUpdateSerializer,
     SetAvatarSerializer,
-    SubscriptionCreateSerializer,
     UserSerializer,
     UserWithRecipesSerializer,
 )
-from recipes.models import Favorite, Ingredient, Recipe, RecipeIngredient, ShoppingCart
+from recipes.models import (
+    Favorite,
+    Ingredient,
+    Recipe,
+    RecipeIngredient,
+    ShoppingCart,
+)
 from users.models import Subscription, User
 
 
@@ -66,7 +71,9 @@ class CustomUserViewSet(DjoserUserViewSet):
         user = request.user
 
         if request.method == "PUT":
-            serializer = SetAvatarSerializer(user, data=request.data, partial=True)
+            serializer = SetAvatarSerializer(
+                user, data=request.data, partial=True
+            )
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -117,11 +124,15 @@ class CustomUserViewSet(DjoserUserViewSet):
                 raise AlreadySubscribedError()
 
             Subscription.objects.create(user=user, author=author)
-            serializer = UserWithRecipesSerializer(author, context={"request": request})
+            serializer = UserWithRecipesSerializer(
+                author, context={"request": request}
+            )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         if request.method == "DELETE":
-            subscription = Subscription.objects.filter(user=user, author=author)
+            subscription = Subscription.objects.filter(
+                user=user, author=author
+            )
             if not subscription.exists():
                 raise NotSubscribedError()
 
@@ -185,7 +196,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
     @action(
-        detail=True, methods=["post", "delete"], permission_classes=[IsAuthenticated]
+        detail=True,
+        methods=["post", "delete"],
+        permission_classes=[IsAuthenticated],
     )
     def favorite(self, request, pk=None):
         from api.serializers import RecipeMinifiedSerializer
@@ -198,7 +211,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 raise RecipeAlreadyInFavoritesError()
 
             Favorite.objects.create(user=user, recipe=recipe)
-            serializer = RecipeMinifiedSerializer(recipe, context={"request": request})
+            serializer = RecipeMinifiedSerializer(
+                recipe, context={"request": request}
+            )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         if request.method == "DELETE":
@@ -210,7 +225,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(
-        detail=True, methods=["post", "delete"], permission_classes=[IsAuthenticated]
+        detail=True,
+        methods=["post", "delete"],
+        permission_classes=[IsAuthenticated],
     )
     def shopping_cart(self, request, pk=None):
         from api.serializers import RecipeMinifiedSerializer
@@ -223,11 +240,15 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 raise RecipeAlreadyInShoppingCartError()
 
             ShoppingCart.objects.create(user=user, recipe=recipe)
-            serializer = RecipeMinifiedSerializer(recipe, context={"request": request})
+            serializer = RecipeMinifiedSerializer(
+                recipe, context={"request": request}
+            )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         if request.method == "DELETE":
-            shopping_cart_item = ShoppingCart.objects.filter(user=user, recipe=recipe)
+            shopping_cart_item = ShoppingCart.objects.filter(
+                user=user, recipe=recipe
+            )
             if not shopping_cart_item.exists():
                 raise RecipeNotInShoppingCartError()
 
@@ -251,15 +272,23 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 short_code = "".join(
                     random.choices(string.ascii_letters + string.digits, k=6)
                 )
-                if not ShortLink.objects.filter(short_code=short_code).exists():
+                if not ShortLink.objects.filter(
+                    short_code=short_code
+                ).exists():
                     break
 
-            short_link = ShortLink.objects.create(recipe=recipe, short_code=short_code)
+            short_link = ShortLink.objects.create(
+                recipe=recipe, short_code=short_code
+            )
 
-        serializer = ShortLinkSerializer(short_link, context={"request": request})
+        serializer = ShortLinkSerializer(
+            short_link, context={"request": request}
+        )
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @action(detail=False, methods=["get"], permission_classes=[IsAuthenticated])
+    @action(
+        detail=False, methods=["get"], permission_classes=[IsAuthenticated]
+    )
     def download_shopping_cart(self, request):
         from django.http import HttpResponse
 
@@ -269,6 +298,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         shopping_list = generate_shopping_list(user)
 
         response = HttpResponse(shopping_list, content_type="text/plain")
-        response["Content-Disposition"] = 'attachment; filename="shopping_list.txt"'
+        response["Content-Disposition"] = (
+            'attachment; filename="shopping_list.txt"'
+        )
 
         return response
