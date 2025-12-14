@@ -1,0 +1,492 @@
+[
+  {
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$b7dqcfl2jCRutr8YeUXq8J$egEPZBtIxn07bl4htkSVRky2ssoHhMxP/xtp1pjUa2A=",
+      "last_login": null,
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-01-15T10:00:00Z",
+      "email": "alice@foodgram.com",
+      "username": "chef_alice",
+      "first_name": "Алиса",
+      "last_name": "Кулинарова",
+      "avatar": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$h3M10oiVBuzMsRn5HOL7Iy$zqqqkBDRvmE0DX3Jp7iqeF6LJmR/lHuL0iP5l6PT5XU=",
+      "last_login": null,
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-01-16T12:30:00Z",
+      "email": "bob@foodgram.com",
+      "username": "baker_bob",
+      "first_name": "Борис",
+      "last_name": "Хлебников",
+      "avatar": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$qeABwnyOHVGRoSifXNJ57Q$cSHatOrsoZgk6wDVaCACeNK4/sr0Jah1zbVSmeJyVqo=",
+      "last_login": null,
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-01-17T14:15:00Z",
+      "email": "diana@foodgram.com",
+      "username": "cook_diana",
+      "first_name": "Диана",
+      "last_name": "Поварова",
+      "avatar": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$pzz86ehTQLSIQVVhSP80RE$A3676dM/KbYljQgGNsowAeQlv+8jcBMdO1T3HXJmgA4=",
+      "last_login": null,
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-01-18T16:45:00Z",
+      "email": "max@foodgram.com",
+      "username": "foodlover_max",
+      "first_name": "Максим",
+      "last_name": "Едоков",
+      "avatar": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 1,
+    "fields": {
+      "author": 2,
+      "name": "Борщ украинский классический",
+      "image": "recipes/images/borscht.jpg",
+      "text": "Настоящий украинский борщ с мясом и сметаной. Готовится на говяжьем бульоне с добавлением свеклы, капусты, моркови и других овощей. Подается горячим со сметаной и свежей зеленью.",
+      "cooking_time": 180,
+      "pub_date": "2024-02-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 2,
+    "fields": {
+      "author": 3,
+      "name": "Хлеб ржаной на закваске",
+      "image": "recipes/images/rye_bread.jpg",
+      "text": "Ароматный ржаной хлеб, приготовленный на натуральной закваске. Требует времени для подготовки закваски, но результат превосходит все ожидания. Хлеб получается с хрустящей корочкой и пористым мякишем.",
+      "cooking_time": 480,
+      "pub_date": "2024-02-02T09:30:00.000Z"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 3,
+    "fields": {
+      "author": 2,
+      "name": "Паста карбонара",
+      "image": "recipes/images/carbonara.jpg",
+      "text": "Классическая итальянская паста карбонара с беконом, яйцами и пармезаном. Готовится быстро, но требует точного соблюдения технологии, чтобы яйца не свернулись.",
+      "cooking_time": 25,
+      "pub_date": "2024-02-03T18:15:00.000Z"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 4,
+    "fields": {
+      "author": 4,
+      "name": "Шарлотка с яблоками",
+      "image": "recipes/images/charlotte.jpg",
+      "text": "Простая и вкусная шарлотка с яблоками. Идеальный десерт для семейного чаепития. Готовится из доступных продуктов и не требует особых кулинарных навыков.",
+      "cooking_time": 60,
+      "pub_date": "2024-02-04T14:20:00.000Z"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 5,
+    "fields": {
+      "author": 3,
+      "name": "Круассаны французские",
+      "image": "recipes/images/croissants.jpg",
+      "text": "Настоящие французские круассаны с хрустящей корочкой и нежным слоистым тестом. Процесс приготовления длительный, но результат стоит затраченных усилий.",
+      "cooking_time": 720,
+      "pub_date": "2024-02-05T07:00:00.000Z"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 6,
+    "fields": {
+      "author": 4,
+      "name": "Салат Цезарь с курицей",
+      "image": "recipes/images/caesar_salad.jpg",
+      "text": "Популярный салат Цезарь с жареной курицей, листьями романо, сухариками и классическим соусом. Отличный выбор для легкого ужина или обеда.",
+      "cooking_time": 30,
+      "pub_date": "2024-02-06T13:45:00.000Z"
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 1,
+    "fields": {
+      "recipe": 1,
+      "ingredient": 278,
+      "amount": 500
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 2,
+    "fields": {
+      "recipe": 1,
+      "ingredient": 1567,
+      "amount": 300
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 3,
+    "fields": {
+      "recipe": 1,
+      "ingredient": 1053,
+      "amount": 200
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 4,
+    "fields": {
+      "recipe": 1,
+      "ingredient": 520,
+      "amount": 300
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 5,
+    "fields": {
+      "recipe": 1,
+      "ingredient": 886,
+      "amount": 150
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 6,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 1435,
+      "amount": 300
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 7,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 1081,
+      "amount": 200
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 8,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 252,
+      "amount": 300
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 9,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 1684,
+      "amount": 10
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 10,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 1713,
+      "amount": 400
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 11,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 120,
+      "amount": 150
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 12,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 2180,
+      "amount": 100
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 13,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 1210,
+      "amount": 100
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 14,
+    "fields": {
+      "recipe": 4,
+      "ingredient": 2137,
+      "amount": 800
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 15,
+    "fields": {
+      "recipe": 4,
+      "ingredient": 2180,
+      "amount": 150
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 16,
+    "fields": {
+      "recipe": 4,
+      "ingredient": 1546,
+      "amount": 150
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 17,
+    "fields": {
+      "recipe": 4,
+      "ingredient": 1081,
+      "amount": 150
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 18,
+    "fields": {
+      "recipe": 5,
+      "ingredient": 1081,
+      "amount": 500
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 19,
+    "fields": {
+      "recipe": 5,
+      "ingredient": 1646,
+      "amount": 300
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 20,
+    "fields": {
+      "recipe": 5,
+      "ingredient": 1032,
+      "amount": 250
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 21,
+    "fields": {
+      "recipe": 6,
+      "ingredient": 1530,
+      "amount": 200
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 22,
+    "fields": {
+      "recipe": 6,
+      "ingredient": 780,
+      "amount": 300
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 23,
+    "fields": {
+      "recipe": 6,
+      "ingredient": 1210,
+      "amount": 50
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 24,
+    "fields": {
+      "recipe": 6,
+      "ingredient": 1741,
+      "amount": 50
+    }
+  },
+  {
+    "model": "users.subscription",
+    "pk": 1,
+    "fields": {
+      "user": 5,
+      "author": 2,
+      "created_at": "2024-02-07T10:00:00.000Z"
+    }
+  },
+  {
+    "model": "users.subscription",
+    "pk": 2,
+    "fields": {
+      "user": 5,
+      "author": 3,
+      "created_at": "2024-02-07T10:15:00.000Z"
+    }
+  },
+  {
+    "model": "users.subscription",
+    "pk": 3,
+    "fields": {
+      "user": 4,
+      "author": 2,
+      "created_at": "2024-02-07T11:30:00.000Z"
+    }
+  },
+  {
+    "model": "recipes.favorite",
+    "pk": 1,
+    "fields": {
+      "user": 5,
+      "recipe": 1,
+      "added_at": "2024-02-08T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "recipes.favorite",
+    "pk": 2,
+    "fields": {
+      "user": 5,
+      "recipe": 3,
+      "added_at": "2024-02-08T12:15:00.000Z"
+    }
+  },
+  {
+    "model": "recipes.favorite",
+    "pk": 3,
+    "fields": {
+      "user": 4,
+      "recipe": 1,
+      "added_at": "2024-02-08T13:30:00.000Z"
+    }
+  },
+  {
+    "model": "recipes.favorite",
+    "pk": 4,
+    "fields": {
+      "user": 4,
+      "recipe": 4,
+      "added_at": "2024-02-08T13:45:00.000Z"
+    }
+  },
+  {
+    "model": "recipes.shoppingcart",
+    "pk": 1,
+    "fields": {
+      "user": 5,
+      "recipe": 1,
+      "added_at": "2024-02-09T10:00:00.000Z"
+    }
+  },
+  {
+    "model": "recipes.shoppingcart",
+    "pk": 2,
+    "fields": {
+      "user": 5,
+      "recipe": 6,
+      "added_at": "2024-02-09T10:30:00.000Z"
+    }
+  },
+  {
+    "model": "recipes.shoppingcart",
+    "pk": 3,
+    "fields": {
+      "user": 4,
+      "recipe": 2,
+      "added_at": "2024-02-09T14:20:00.000Z"
+    }
+  },
+  {
+    "model": "recipes.shoppingcart",
+    "pk": 4,
+    "fields": {
+      "user": 3,
+      "recipe": 3,
+      "added_at": "2024-02-09T16:15:00.000Z"
+    }
+  },
+  {
+    "model": "recipes.shortlink",
+    "pk": 1,
+    "fields": {
+      "recipe": 1,
+      "short_code": "abc123",
+      "created_at": "2024-02-10T09:00:00.000Z"
+    }
+  },
+  {
+    "model": "recipes.shortlink",
+    "pk": 2,
+    "fields": {
+      "recipe": 3,
+      "short_code": "def456",
+      "created_at": "2024-02-10T09:30:00.000Z"
+    }
+  },
+  {
+    "model": "recipes.shortlink",
+    "pk": 3,
+    "fields": {
+      "recipe": 5,
+      "short_code": "ghi789",
+      "created_at": "2024-02-10T10:00:00.000Z"
+    }
+  }
+]

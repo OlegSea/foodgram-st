@@ -15,10 +15,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
 load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -138,7 +136,6 @@ USE_TZ = True
 STATIC_URL = "/django-static/"
 STATIC_ROOT = BASE_DIR / "static"
 
-# Media files
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
@@ -147,10 +144,8 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Custom user model
 AUTH_USER_MODEL = "users.User"
 
-# Djoser settings
 DJOSER = {
     "SERIALIZERS": {
         "user_create": "api.serializers.UserCreateSerializer",
@@ -178,7 +173,6 @@ DJOSER = {
     "SEND_CONFIRMATION_EMAIL": False,
 }
 
-# Django REST Framework settings
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",

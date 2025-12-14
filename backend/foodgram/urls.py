@@ -30,7 +30,6 @@ urlpatterns = [
     ),
 ]
 
-# Serve media files during development
 if settings.DEBUG:
     urlpatterns += static(
         settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
@@ -39,7 +38,6 @@ if settings.DEBUG:
         settings.STATIC_URL, document_root=settings.STATIC_ROOT
     )
 
-# Configure admin site titles
 admin.site.site_header = "Foodgram Administration"
 admin.site.site_title = "Foodgram Admin"
 admin.site.index_title = "Welcome to Foodgram Administration"
