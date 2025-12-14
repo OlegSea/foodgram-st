@@ -10,13 +10,12 @@ on:
   workflow_dispatch:
 
 env:
-  DOCKERHUB_USERNAME: olegsea
   BACKEND_IMAGE: olegsea/foodgram-backend
   FRONTEND_IMAGE: olegsea/foodgram-frontend
 
 jobs:
   build-and-push-backend:
-    name: Собрать бэкенд и запушить
+    name: Собрать и запушить бэкенд
     runs-on: ubuntu-latest
 
     steps:
