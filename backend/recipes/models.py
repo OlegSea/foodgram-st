@@ -83,6 +83,7 @@ class Subscription(models.Model):
     def __str__(self):
         return f"{self.user.username} подписан на {self.author.username}"
 
+
 class Ingredient(models.Model):
     name = models.CharField(
         max_length=128,
@@ -244,41 +245,3 @@ class ShoppingCart(models.Model):
         return (
             f"{self.user.username} добавил {self.recipe.name} в список покупок"
         )
-
-
-class ShortLink(models.Model):
-    recipe = models.OneToOneField(
-        Recipe,
-        on_delete=models.CASCADE,
-        related_name="short_link",
-        verbose_name="Рецепт",
-    )
-    short_code = models.CharField(
-        max_length=10,
-        unique=True,
-        db_index=True,
-        verbose_name="Короткий код",
-    )
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name="Дата создания",
-    )
-
-    class Meta:
-        verbose_name = "Короткая ссылка"
-        verbose_name_plural = "Короткие ссылки"
-
-    def __str__(self):
-        return f"/s/{self.short_code} -> {self.recipe.name}"
-
-    @staticmethod
-    def generate_short_code():
-        import random
-        import string
-
-        while True:
-            code = "".join(
-                random.choices(string.ascii_letters + string.digits, k=6)
-            )
-            if not ShortLink.objects.filter(short_code=code).exists():
-                return code

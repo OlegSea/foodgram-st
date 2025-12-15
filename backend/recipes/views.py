@@ -1,10 +1,17 @@
-from django.shortcuts import get_object_or_404, redirect
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
 
-from recipes.models import ShortLink
+from recipes.models import Recipe
 
 
-def short_link_redirect(request, short_code):
-    short_link = get_object_or_404(ShortLink, short_code=short_code)
-    recipe_id = short_link.recipe.id
+def short_link_redirect(request, recipe_id):
+    recipe = get_object_or_404(Recipe, id=recipe_id)
 
-    return redirect(f"/recipes/{recipe_id}")
+    recipe_url_path = reverse("api:recipes-detail", kwargs={"pk": recipe.id})
+
+    full_url = request.build_absolute_uri(recipe_url_path)
+
+    response_data = {"short-link": full_url}
+
+    return JsonResponse(response_data)

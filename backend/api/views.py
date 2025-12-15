@@ -258,34 +258,19 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["get"], url_path="get-link")
     def get_link(self, request, pk=None):
-        import random
-        import string
-
-        from api.serializers import ShortLinkSerializer
-        from recipes.models import ShortLink
+        from django.urls import reverse
 
         recipe = get_object_or_404(Recipe, pk=pk)
 
-        short_link = ShortLink.objects.filter(recipe=recipe).first()
-
-        if not short_link:
-            while True:
-                short_code = "".join(
-                    random.choices(string.ascii_letters + string.digits, k=6)
-                )
-                if not ShortLink.objects.filter(
-                    short_code=short_code
-                ).exists():
-                    break
-
-            short_link = ShortLink.objects.create(
-                recipe=recipe, short_code=short_code
-            )
-
-        serializer = ShortLinkSerializer(
-            short_link, context={"request": request}
+        short_url_path = reverse(
+            "short_link_redirect", kwargs={"recipe_id": recipe.id}
         )
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        full_url = request.build_absolute_uri(short_url_path)
+
+        response_data = {"short-link": full_url}
+
+        return Response(response_data, status=status.HTTP_200_OK)
 
     @action(
         detail=False, methods=["get"], permission_classes=[IsAuthenticated]

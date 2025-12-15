@@ -17,7 +17,6 @@ from recipes.models import (
     Recipe,
     RecipeIngredient,
     ShoppingCart,
-    ShortLink,
     Subscription,
     User,
 )
@@ -344,24 +343,3 @@ class SubscriptionCreateSerializer(serializers.ModelSerializer):
             )
 
         return data
-
-
-class ShortLinkSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ShortLink
-        fields = ("short_link",)
-
-    short_link = serializers.SerializerMethodField(
-        method_name="get_short_link"
-    )
-
-    def get_short_link(self, obj):
-        request = self.context.get("request")
-        if request:
-            return request.build_absolute_uri(f"/s/{obj.short_code}/")
-        return f"/s/{obj.short_code}/"
-
-    def to_representation(self, instance):
-        ret = super().to_representation(instance)
-        ret["short-link"] = ret.pop("short_link")
-        return ret
