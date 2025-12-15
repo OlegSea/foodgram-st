@@ -55,7 +55,7 @@ class RecipeAdmin(admin.ModelAdmin):
 
     @admin.display(description="В избранном")
     def get_favorites_count(self, obj):
-        return obj.favorited_by.count()
+        return obj.favorites.count()
 
     @admin.display(description="Продукты")
     @mark_safe
@@ -83,9 +83,8 @@ class RecipeAdmin(admin.ModelAdmin):
 
 @admin.register(Favorite, ShoppingCart)
 class BaseUserRecipeAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "recipe", "added_at")
+    list_display = ("id", "user", "recipe")
     search_fields = ("user__username", "recipe__name")
-    list_filter = ("added_at",)
 
 
 @admin.register(User)

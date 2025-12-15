@@ -392,8 +392,7 @@
     "pk": 1,
     "fields": {
       "user": 5,
-      "recipe": 1,
-      "added_at": "2024-02-08T12:00:00.000Z"
+      "recipe": 1
     }
   },
   {
@@ -401,8 +400,7 @@
     "pk": 2,
     "fields": {
       "user": 5,
-      "recipe": 3,
-      "added_at": "2024-02-08T12:15:00.000Z"
+      "recipe": 3
     }
   },
   {
@@ -410,8 +408,7 @@
     "pk": 3,
     "fields": {
       "user": 4,
-      "recipe": 1,
-      "added_at": "2024-02-08T13:30:00.000Z"
+      "recipe": 1
     }
   },
   {
@@ -419,8 +416,7 @@
     "pk": 4,
     "fields": {
       "user": 4,
-      "recipe": 4,
-      "added_at": "2024-02-08T13:45:00.000Z"
+      "recipe": 4
     }
   },
   {
@@ -428,8 +424,7 @@
     "pk": 1,
     "fields": {
       "user": 5,
-      "recipe": 1,
-      "added_at": "2024-02-09T10:00:00.000Z"
+      "recipe": 1
     }
   },
   {
@@ -437,8 +432,7 @@
     "pk": 2,
     "fields": {
       "user": 5,
-      "recipe": 6,
-      "added_at": "2024-02-09T10:30:00.000Z"
+      "recipe": 6
     }
   },
   {
@@ -446,8 +440,7 @@
     "pk": 3,
     "fields": {
       "user": 4,
-      "recipe": 2,
-      "added_at": "2024-02-09T14:20:00.000Z"
+      "recipe": 2
     }
   },
   {
@@ -455,8 +448,7 @@
     "pk": 4,
     "fields": {
       "user": 3,
-      "recipe": 3,
-      "added_at": "2024-02-09T16:15:00.000Z"
+      "recipe": 3
     }
   }
 ]
