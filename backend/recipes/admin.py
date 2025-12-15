@@ -15,10 +15,14 @@ from .models import (
 
 @admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "measurement_unit")
+    list_display = ("id", "name", "measurement_unit", "recipes_count")
     search_fields = ("name",)
     list_filter = ("measurement_unit",)
     ordering = ("name",)
+
+    @admin.display(description="Рецептов")
+    def recipes_count(self, obj):
+        return obj.recipe_ingredients.count()
 
 
 class RecipeIngredientInline(admin.TabularInline):
@@ -32,32 +36,53 @@ class RecipeAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "name",
-        "author",
         "cooking_time",
-        "pub_date",
+        "author",
         "get_favorites_count",
+        "ingredients_display",
+        "image_display",
     )
-    search_fields = ("name", "author__username", "author__email")
-    list_filter = ("pub_date",)
+    search_fields = (
+        "name",
+        "author__username",
+        "author__email",
+        "recipe_ingredients__ingredient__name",
+    )
+    list_filter = ("pub_date", "author")
     readonly_fields = ("pub_date",)
     ordering = ("-pub_date",)
     inlines = [RecipeIngredientInline]
 
+    @admin.display(description="В избранном")
     def get_favorites_count(self, obj):
         return obj.favorited_by.count()
 
-    get_favorites_count.short_description = "В избранном"
+    @admin.display(description="Продукты")
+    @mark_safe
+    def ingredients_display(self, obj):
+        ingredients = obj.recipe_ingredients.select_related("ingredient").all()
+        if not ingredients:
+            return '<span style="color: #999;">Нет ингредиентов</span>'
+
+        ingredients_list = []
+        for recipe_ingredient in ingredients:
+            ingredient_name = recipe_ingredient.ingredient.name
+            amount = recipe_ingredient.amount
+            unit = recipe_ingredient.ingredient.measurement_unit
+            ingredients_list.append(f"{ingredient_name} ({amount} {unit})")
+
+        return "<br>".join(ingredients_list)
+
+    @admin.display(description="Картинка")
+    @mark_safe
+    def image_display(self, obj):
+        if obj.image:
+            return f'<img src="{obj.image.url}" width="60" height="60" style="border-radius: 8px; object-fit: cover;" alt="Изображение рецепта">'
+        return '<span style="color: #999;">Нет изображения</span>'
 
 
-@admin.register(Favorite)
-class FavoriteAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "recipe", "added_at")
-    search_fields = ("user__username", "recipe__name")
-    list_filter = ("added_at",)
-
-
-@admin.register(ShoppingCart)
-class ShoppingCartAdmin(admin.ModelAdmin):
+@admin.register(Favorite, ShoppingCart)
+class BaseUserRecipeAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "recipe", "added_at")
     search_fields = ("user__username", "recipe__name")
     list_filter = ("added_at",)
@@ -128,33 +153,28 @@ class UserAdmin(BaseUserAdmin):
             )
         )
 
+    @admin.display(description="ФИО")
     def full_name(self, obj):
         return f"{obj.first_name} {obj.last_name}".strip()
 
-    full_name.short_description = "ФИО"
-
+    @admin.display(description="Аватар")
     @mark_safe
     def avatar_display(self, obj):
         if obj.avatar:
             return f'<img src="{obj.avatar.url}" width="50" height="50" style="border-radius: 50%; object-fit: cover;" alt="Аватар {obj.username}">'
         return '<span style="color: #999;">Нет аватара</span>'
 
-    avatar_display.short_description = "Аватар"
-
+    @admin.display(description="Рецептов")
     def recipes_count(self, obj):
         return obj.recipes.count()
 
-    recipes_count.short_description = "Рецептов"
-
+    @admin.display(description="Подписок")
     def subscriptions_count(self, obj):
         return obj.subscriptions.count()
 
-    subscriptions_count.short_description = "Подписок"
-
+    @admin.display(description="Подписчиков")
     def subscribers_count(self, obj):
         return obj.author_subscriptions.count()
-
-    subscribers_count.short_description = "Подписчиков"
 
 
 @admin.register(Subscription)
