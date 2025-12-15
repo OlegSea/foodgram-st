@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "djoser",
     "django_filters",
-    "users.apps.UsersConfig",
     "recipes.apps.RecipesConfig",
     "api.apps.ApiConfig",
 ]
@@ -146,7 +145,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "users.User"
+AUTH_USER_MODEL = "recipes.User"
 
 DJOSER = {
     "SERIALIZERS": {

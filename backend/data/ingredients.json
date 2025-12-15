@@ -1,6 +1,6 @@
 [
   {
-    "model": "users.user",
+    "model": "recipes.user",
     "pk": 1,
     "fields": {
       "password": "pbkdf2_sha256$1000000$vapE38gMl1uhHfIYZCKK7A$/gozugmi7F/QUMquAen651EOoTGauwcEWiUhURJr4lQ=",

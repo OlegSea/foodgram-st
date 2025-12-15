@@ -18,8 +18,9 @@ from recipes.models import (
     RecipeIngredient,
     ShoppingCart,
     ShortLink,
+    Subscription,
+    User,
 )
-from users.models import Subscription, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -51,7 +52,7 @@ class UserSerializer(serializers.ModelSerializer):
         if request and request.user.is_authenticated:
             if hasattr(obj, "is_subscribed_annotation"):
                 return obj.is_subscribed_annotation
-            return obj.subscribers.filter(user=request.user).exists()
+            return obj.author_subscriptions.filter(user=request.user).exists()
         return False
 
 

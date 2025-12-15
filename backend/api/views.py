@@ -33,8 +33,9 @@ from recipes.models import (
     Recipe,
     RecipeIngredient,
     ShoppingCart,
+    Subscription,
+    User,
 )
-from users.models import Subscription, User
 
 
 class CustomUserViewSet(DjoserUserViewSet):
@@ -88,7 +89,7 @@ class CustomUserViewSet(DjoserUserViewSet):
     @action(detail=False, methods=["get"], url_path="subscriptions")
     def subscriptions(self, request):
         subscriptions = (
-            User.objects.filter(subscribers__user=request.user)
+            User.objects.filter(author_subscriptions__user=request.user)
             .prefetch_related("recipes")
             .annotate(
                 is_subscribed_annotation=Exists(

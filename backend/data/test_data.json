@@ -1,6 +1,6 @@
 [
   {
-    "model": "users.user",
+    "model": "recipes.user",
     "pk": 2,
     "fields": {
       "password": "pbkdf2_sha256$1000000$b7dqcfl2jCRutr8YeUXq8J$egEPZBtIxn07bl4htkSVRky2ssoHhMxP/xtp1pjUa2A=",
@@ -19,7 +19,7 @@
     }
   },
   {
-    "model": "users.user",
+    "model": "recipes.user",
     "pk": 3,
     "fields": {
       "password": "pbkdf2_sha256$1000000$h3M10oiVBuzMsRn5HOL7Iy$zqqqkBDRvmE0DX3Jp7iqeF6LJmR/lHuL0iP5l6PT5XU=",
@@ -38,7 +38,7 @@
     }
   },
   {
-    "model": "users.user",
+    "model": "recipes.user",
     "pk": 4,
     "fields": {
       "password": "pbkdf2_sha256$1000000$qeABwnyOHVGRoSifXNJ57Q$cSHatOrsoZgk6wDVaCACeNK4/sr0Jah1zbVSmeJyVqo=",
@@ -57,7 +57,7 @@
     }
   },
   {
-    "model": "users.user",
+    "model": "recipes.user",
     "pk": 5,
     "fields": {
       "password": "pbkdf2_sha256$1000000$pzz86ehTQLSIQVVhSP80RE$A3676dM/KbYljQgGNsowAeQlv+8jcBMdO1T3HXJmgA4=",
@@ -364,7 +364,7 @@
     }
   },
   {
-    "model": "users.subscription",
+    "model": "recipes.subscription",
     "pk": 1,
     "fields": {
       "user": 5,
@@ -372,7 +372,7 @@
     }
   },
   {
-    "model": "users.subscription",
+    "model": "recipes.subscription",
     "pk": 2,
     "fields": {
       "user": 5,
@@ -380,7 +380,7 @@
     }
   },
   {
-    "model": "users.subscription",
+    "model": "recipes.subscription",
     "pk": 3,
     "fields": {
       "user": 4,
