@@ -51,11 +51,11 @@ const RecipeEdit = ({ onItemDelete }) => {
       ingredientValue.name === "" ||
       !ingredientValue.id
     ) {
-      return setIngredientError("Ингредиент не выбран");
+      return setIngredientError("Продукт не выбран");
     }
 
     if (recipeIngredients.find(({ name }) => name === ingredientValue.name)) {
-      return setIngredientError("Ингредиент уже выбран");
+      return setIngredientError("Продукт уже выбран");
     }
 
     setRecipeIngredients([...recipeIngredients, ingredientValue]);
@@ -172,7 +172,7 @@ const RecipeEdit = ({ onItemDelete }) => {
                 }
                 if (ingredients) {
                   return setSubmitError({
-                    submitError: `Ингредиенты: ${
+                    submitError: `Продукты: ${
                       ingredients
                         .filter((item) => Object.keys(item).length)
                         .map((item) => {
@@ -208,7 +208,7 @@ const RecipeEdit = ({ onItemDelete }) => {
           <div className={styles.ingredients}>
             <div className={styles.ingredientsInputs}>
               <Input
-                label="Ингредиенты"
+                label="Продукты"
                 className={styles.ingredientsNameInput}
                 inputClassName={styles.ingredientsInput}
                 labelClassName={styles.ingredientsLabel}
@@ -269,7 +269,7 @@ const RecipeEdit = ({ onItemDelete }) => {
               )}
             </div>
             <div className={styles.ingredientAdd} onClick={handleAddIngredient}>
-              Добавить ингредиент
+              Добавить продукт
             </div>
             {ingredientError && (
               <p className={cn(styles.error, styles.errorIngredient)}>

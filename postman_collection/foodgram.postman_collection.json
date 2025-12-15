@@ -2686,7 +2686,7 @@
 											"    pm.response.to.have.jsonSchema(responseSchema);",
 											"    pm.expect(",
 											"        responseData.length >= 2,",
-											"        \"Создайте в БД как минимум два ингредиента для корректной работы коллекции запросов\"",
+											"        \"Создайте в БД как минимум два продукта для корректной работы коллекции запросов\"",
 											"    )",
 											"    pm.collectionVariables.set(\"firstIndredientId\", responseData[0].id);",
 											"    pm.collectionVariables.set('ingredientNameFirstLatter', responseData[0].name.slice(0,1))",
@@ -2763,7 +2763,7 @@
 											"pm.test(",
 											"    \"Ответ должен содержать данные, удовлетворяющие условиям поиска\",",
 											"    function () {",
-											"        const assert_msg = \"Ответ должен содержать ингредиенты, начало названия которых совпадает со значением квери-параметра `name`\"",
+											"        const assert_msg = \"Ответ должен содержать продукты, начало названия которых совпадает со значением квери-параметра `name`\"",
 											"        pm.expect(responseData.length > 0, assert_msg);",
 											"        const expectedingredientNameStart = decodeURIComponent(pm.request.url.query.get(\"name\"));",
 											"        for (elem of responseData) {",
@@ -2947,7 +2947,7 @@
 											"pm.test(\"Статус-код ответа должен быть 404\", function () {",
 											"    pm.expect(",
 											"        pm.response.status,",
-											"        \"Запрос запрос к `/api/ingredients/{ingredientId}/`, содержащий `id` несуществующего ингредиента, должен вернуть ответ со статус-кодом 404\"",
+											"        \"Запрос запрос к `/api/ingredients/{ingredientId}/`, содержащий `id` несуществующего продукта, должен вернуть ответ со статус-кодом 404\"",
 											"    ).to.be.eql(\"Not Found\");",
 											"});",
 											""
@@ -2999,7 +2999,7 @@
 											"pm.test(\"Статус-код ответа должен быть 405\", function () {",
 											"    pm.expect(",
 											"        pm.response.status,",
-											"        \"Запрос на создание ингредиента должен вернуть ответ со статус-кодом 405\"",
+											"        \"Запрос на создание продукта должен вернуть ответ со статус-кодом 405\"",
 											"    ).to.be.eql(\"Method Not Allowed\");",
 											"});",
 											""
@@ -3059,7 +3059,7 @@
 											"pm.test(\"Статус-код ответа должен быть 405\", function () {",
 											"    pm.expect(",
 											"        pm.response.status,",
-											"        \"Запрос на обновление ингредиента должен вернуть ответ со статус-кодом 405\"",
+											"        \"Запрос на обновление продукта должен вернуть ответ со статус-кодом 405\"",
 											"    ).to.be.eql(\"Method Not Allowed\");",
 											"});",
 											""
@@ -3120,7 +3120,7 @@
 											"pm.test(\"Статус-код ответа должен быть 405\", function () {",
 											"    pm.expect(",
 											"        pm.response.status,",
-											"        \"Запрос на обновление ингредиента должен вернуть ответ со статус-кодом 405\"",
+											"        \"Запрос на обновление продукта должен вернуть ответ со статус-кодом 405\"",
 											"    ).to.be.eql(\"Method Not Allowed\");",
 											"});",
 											""
@@ -3181,7 +3181,7 @@
 											"pm.test(\"Статус-код ответа должен быть 405\", function () {",
 											"    pm.expect(",
 											"        pm.response.status,",
-											"        \"Запрос на удаление ингредиента должен вернуть ответ со статус-кодом 405\"",
+											"        \"Запрос на удаление продукта должен вернуть ответ со статус-кодом 405\"",
 											"    ).to.be.eql(\"Method Not Allowed\");",
 											"});",
 											""
@@ -3333,7 +3333,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"ingredients\": [\n    {\n      \"id\": {{firstIndredientId}},\n      \"amount\": {{firstIngredientAmount}}\n    },\n    {\n      \"id\": {{secondIndredientId}},\n      \"amount\": {{secondIngredientAmount}}\n    }\n  ],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Нечто съедобное (это не точно)\",\n  \"text\": \"Приготовьте как-нибудь эти ингредиенты\",\n  \"cooking_time\": 5\n}",
+									"raw": "{\n  \"ingredients\": [\n    {\n      \"id\": {{firstIndredientId}},\n      \"amount\": {{firstIngredientAmount}}\n    },\n    {\n      \"id\": {{secondIndredientId}},\n      \"amount\": {{secondIngredientAmount}}\n    }\n  ],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Нечто съедобное (это не точно)\",\n  \"text\": \"Приготовьте как-нибудь эти продукты\",\n  \"cooking_time\": 5\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -4781,7 +4781,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Рецепт без ингредиентов\",\n  \"text\": \"Не знаю как такое готовить\",\n  \"cooking_time\": 90\n}",
+											"raw": "{\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Рецепт без продуктов\",\n  \"text\": \"Не знаю как такое готовить\",\n  \"cooking_time\": 90\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -4840,7 +4840,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"ingredients\": [],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Неправильный рецепт\",\n  \"text\": \"А ингредиенты я не скажу!\",\n  \"cooking_time\": 15\n}",
+											"raw": "{\n  \"ingredients\": [],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Неправильный рецепт\",\n  \"text\": \"А продукты я не скажу!\",\n  \"cooking_time\": 15\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -4871,7 +4871,7 @@
 													"pm.test(\"Статус-код ответа должен быть 400\", function () {",
 													"    pm.expect(",
 													"        pm.response.status,",
-													"        \"Если в запросе на создание рецепта указан несуществующий ингредиент - должен вернуться ответ со статусом 400\"",
+													"        \"Если в запросе на создание рецепта указан несуществующий продукт - должен вернуться ответ со статусом 400\"",
 													"    ).to.be.eql(\"Bad Request\");",
 													"});"
 												],
@@ -4899,7 +4899,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"ingredients\": [\n  {\n    \"id\": 99999,\n    \"amount\": 25\n  }\n  ],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Рецепт с несуществующим ингредиентом\",\n  \"text\": \"Админ, добавь ингредиент!\",\n  \"cooking_time\": 15\n}",
+											"raw": "{\n  \"ingredients\": [\n  {\n    \"id\": 99999,\n    \"amount\": 25\n  }\n  ],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Рецепт с несуществующим продуктом\",\n  \"text\": \"Админ, добавь продукт!\",\n  \"cooking_time\": 15\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -4930,7 +4930,7 @@
 													"pm.test(\"Статус-код ответа должен быть 400\", function () {",
 													"    pm.expect(",
 													"        pm.response.status,",
-													"        \"Если в запросе на создание рецепта указано количество ингредиента меньше 1 - должен вернуться ответ со статусом 400\"",
+													"        \"Если в запросе на создание рецепта указано количество продукта меньше 1 - должен вернуться ответ со статусом 400\"",
 													"    ).to.be.eql(\"Bad Request\");",
 													"});"
 												],
@@ -4958,7 +4958,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"ingredients\": [\n  {\n      \"id\": {{firstIndredientId}},\n      \"amount\": 0\n  }\n  ],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Некорректное количество ингредиента\",\n  \"text\": \"Возьмите ноль ингредиента...\",\n  \"cooking_time\": 15\n}",
+											"raw": "{\n  \"ingredients\": [\n  {\n      \"id\": {{firstIndredientId}},\n      \"amount\": 0\n  }\n  ],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Некорректное количество продукта\",\n  \"text\": \"Возьмите ноль продукта...\",\n  \"cooking_time\": 15\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -4989,7 +4989,7 @@
 													"pm.test(\"Статус-код ответа должен быть 400\", function () {",
 													"    pm.expect(",
 													"        pm.response.status,",
-													"        \"Если запрос на создание рецепта содержит повторяющиеся ингредиенты - должен вернуться ответ со статусом 400\"",
+													"        \"Если запрос на создание рецепта содержит повторяющиеся продукты - должен вернуться ответ со статусом 400\"",
 													"    ).to.be.eql(\"Bad Request\");",
 													"});"
 												],
@@ -5018,7 +5018,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"ingredients\": [\n    {\n        \"id\": {{firstIndredientId}},\n        \"amount\": 10\n    },\n    {\n        \"id\": {{firstIndredientId}},\n        \"amount\": 10\n    }\n  ],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Повторяющиеся ингредиенты\",\n  \"text\": \"Двойная порция\",\n  \"cooking_time\": 15\n}",
+											"raw": "{\n  \"ingredients\": [\n    {\n        \"id\": {{firstIndredientId}},\n        \"amount\": 10\n    },\n    {\n        \"id\": {{firstIndredientId}},\n        \"amount\": 10\n    }\n  ],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Повторяющиеся продукты\",\n  \"text\": \"Двойная порция\",\n  \"cooking_time\": 15\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -5827,7 +5827,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Нет поля с ингредиентами\",\n  \"text\": \"Ингредиенты не указаны\",\n  \"cooking_time\": 12\n}",
+											"raw": "{\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Нет поля с продуктами\",\n  \"text\": \"Продукты не указаны\",\n  \"cooking_time\": 12\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -5887,7 +5887,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"ingredients\": [],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Пустое поле ингредиентов\",\n  \"text\": \"Ингредиенты не указаны\",\n  \"cooking_time\": 12\n}",
+											"raw": "{\n  \"ingredients\": [],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Пустое поле продуктов\",\n  \"text\": \"Продукты не указаны\",\n  \"cooking_time\": 12\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -5919,7 +5919,7 @@
 													"pm.test(\"Статус-код ответа должен быть 400\", function () {",
 													"    pm.expect(",
 													"        pm.response.status,",
-													"        \"Если в запросе автора на обновление рецепта указан несуществующий ингредиент - должен вернуться ответ со статусом 400\"",
+													"        \"Если в запросе автора на обновление рецепта указан несуществующий продукт - должен вернуться ответ со статусом 400\"",
 													"    ).to.be.eql(\"Bad Request\");",
 													"});"
 												],
@@ -5947,7 +5947,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"ingredients\": [\n    {\n        \"id\": 99999,\n        \"amount\": 20\n    }\n  ],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Пустое поле ингредиентов\",\n  \"text\": \"Ингредиенты не указаны\",\n  \"cooking_time\": 12\n}",
+											"raw": "{\n  \"ingredients\": [\n    {\n        \"id\": 99999,\n        \"amount\": 20\n    }\n  ],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Пустое поле продуктов\",\n  \"text\": \"Продукты не указаны\",\n  \"cooking_time\": 12\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -5979,7 +5979,7 @@
 													"pm.test(\"Статус-код ответа должен быть 400\", function () {",
 													"    pm.expect(",
 													"        pm.response.status,",
-													"        \"Если в запросе автора на обновление рецепта количество ингредиентов меньше 1 - должен вернуться ответ со статусом 400\"",
+													"        \"Если в запросе автора на обновление рецепта количество продуктов меньше 1 - должен вернуться ответ со статусом 400\"",
 													"    ).to.be.eql(\"Bad Request\");",
 													"});",
 													""
@@ -6008,7 +6008,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"ingredients\": [\n  {\n      \"id\": {{firstIndredientId}},\n      \"amount\": 0\n  }\n  ],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Рецепт с некорректным количеством ингридиента\",\n  \"text\": \"Проверка валидации количества ингредиента\",\n  \"cooking_time\": 15\n}",
+											"raw": "{\n  \"ingredients\": [\n  {\n      \"id\": {{firstIndredientId}},\n      \"amount\": 0\n  }\n  ],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Рецепт с некорректным количеством ингридиента\",\n  \"text\": \"Проверка валидации количества продукта\",\n  \"cooking_time\": 15\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -6040,7 +6040,7 @@
 													"pm.test(\"Статус-код ответа должен быть 400\", function () {",
 													"    pm.expect(",
 													"        pm.response.status,",
-													"        \"Если запрос автора на обновление рецепта содержит повторяющиеся ингредиенты - должен вернуться ответ со статусом 400\"",
+													"        \"Если запрос автора на обновление рецепта содержит повторяющиеся продукты - должен вернуться ответ со статусом 400\"",
 													"    ).to.be.eql(\"Bad Request\");",
 													"});"
 												],
@@ -6069,7 +6069,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"ingredients\": [\n    {\n        \"id\": {{firstIndredientId}},\n        \"amount\": 10\n    },\n    {\n        \"id\": {{firstIndredientId}},\n        \"amount\": 10\n    }\n  ],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Повторяющиеся ингредиенты (обновление)\",\n  \"text\": \"Двойная порция\",\n  \"cooking_time\": 15\n}",
+											"raw": "{\n  \"ingredients\": [\n    {\n        \"id\": {{firstIndredientId}},\n        \"amount\": 10\n    },\n    {\n        \"id\": {{firstIndredientId}},\n        \"amount\": 10\n    }\n  ],\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==\",\n  \"name\": \"Повторяющиеся продукты (обновление)\",\n  \"text\": \"Двойная порция\",\n  \"cooking_time\": 15\n}",
 											"options": {
 												"raw": {
 													"language": "json"

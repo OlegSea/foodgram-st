@@ -590,13 +590,13 @@ paths:
         - Подписки
   /api/ingredients/:
     get:
-      operationId: Список ингредиентов
-      description: 'Список ингредиентов с возможностью поиска по имени.'
+      operationId: Список продуктов
+      description: 'Список продуктов с возможностью поиска по имени.'
       parameters:
         - name: name
           required: false
           in: query
-          description: Поиск по частичному вхождению в начале названия ингредиента.
+          description: Поиск по частичному вхождению в начале названия продукта.
           schema:
             type: string
       responses:
@@ -609,11 +609,11 @@ paths:
                   $ref: '#/components/schemas/Ingredient'
           description: ''
       tags:
-        - Ингредиенты
+        - Продукты
   /api/ingredients/{id}/:
     get:
-      operationId: Получение ингредиента
-      description: 'Уникальный идентификатор этого ингредиента.'
+      operationId: Получение продукта
+      description: 'Уникальный идентификатор этого продукта.'
       parameters:
         - name: id
           in: path
@@ -629,7 +629,7 @@ paths:
                 $ref: '#/components/schemas/Ingredient'
           description: ''
       tags:
-        - Ингредиенты
+        - Продукты
   /api/users/set_password/:
     post:
       operationId: Изменение пароля
@@ -808,7 +808,7 @@ components:
           $ref: '#/components/schemas/User'
         ingredients:
           readOnly: true
-          description: 'Список ингредиентов'
+          description: 'Список продуктов'
           type: array
           items:
             $ref: '#/components/schemas/IngredientInRecipe'
@@ -1061,7 +1061,7 @@ components:
           type: integer
           readOnly: true
         ingredients:
-          description: Список ингредиентов
+          description: Список продуктов
           type: array
           items:
             example:
@@ -1107,7 +1107,7 @@ components:
           type: integer
           readOnly: true
         ingredients:
-          description: Список ингредиентов
+          description: Список продуктов
           type: array
           items:
             example:
@@ -1161,7 +1161,7 @@ components:
       type: object
       properties:
         ingredients:
-          description: 'Ошибки в ингредиентах. В приведенном примере в первом и третьем ингредиенте не было ошибок (amount >= 1), а во втором были.'
+          description: 'Ошибки в продуктах. В приведенном примере в первом и третьем продукте не было ошибок (amount >= 1), а во втором были.'
           example: [{},{"amount":["Убедитесь, что это значение больше либо равно 1."]}, {}]
           type: array
           items:

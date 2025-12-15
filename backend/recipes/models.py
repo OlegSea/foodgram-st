@@ -88,7 +88,6 @@ class Ingredient(models.Model):
     name = models.CharField(
         max_length=128,
         verbose_name="Название",
-        db_index=True,
     )
     measurement_unit = models.CharField(
         max_length=64,
@@ -96,8 +95,8 @@ class Ingredient(models.Model):
     )
 
     class Meta:
-        verbose_name = "Ингредиент"
-        verbose_name_plural = "Ингредиенты"
+        verbose_name = "Продукт"
+        verbose_name_plural = "Продукты"
         ordering = ["name"]
         constraints = [
             models.UniqueConstraint(
@@ -158,7 +157,7 @@ class RecipeIngredient(models.Model):
         Ingredient,
         on_delete=models.CASCADE,
         related_name="recipe_ingredients",
-        verbose_name="Ингредиент",
+        verbose_name="Продукт",
     )
     amount = models.PositiveIntegerField(
         verbose_name="Количество",
@@ -166,8 +165,8 @@ class RecipeIngredient(models.Model):
     )
 
     class Meta:
-        verbose_name = "Ингредиент в рецепте"
-        verbose_name_plural = "Ингредиенты в рецептах"
+        verbose_name = "Продукт в рецепте"
+        verbose_name_plural = "Продукты в рецептах"
         constraints = [
             models.UniqueConstraint(
                 fields=["recipe", "ingredient"],

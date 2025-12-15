@@ -62,7 +62,7 @@ class RecipeAdmin(admin.ModelAdmin):
     def ingredients_display(self, obj):
         ingredients = obj.recipe_ingredients.select_related("ingredient").all()
         if not ingredients:
-            return '<span style="color: #999;">Нет ингредиентов</span>'
+            return '<span style="color: #999;">Нет продуктов</span>'
 
         ingredients_list = []
         for recipe_ingredient in ingredients:

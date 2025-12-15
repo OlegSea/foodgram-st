@@ -43,7 +43,7 @@ const RecipeCreate = ({ onEdit }) => {
       ingredientValue.amount !== "" &&
       !/^\d+$/.test(ingredientValue.amount)
     ) {
-      return setIngredientError("Количество ингредиента должно быть целым числом");
+      return setIngredientError("Количество продукта должно быть целым числом");
     }
 
     if (
@@ -51,11 +51,11 @@ const RecipeCreate = ({ onEdit }) => {
       ingredientValue.name === "" ||
       !ingredientValue.id
     ) {
-      return setIngredientError("Ингредиент не выбран");
+      return setIngredientError("Продукт не выбран");
     }
 
     if (recipeIngredients.find(({ name }) => name === ingredientValue.name)) {
-      return setIngredientError("Ингредиент уже выбран");
+      return setIngredientError("Продукт уже выбран");
     }
 
     setRecipeIngredients([...recipeIngredients, ingredientValue]);
@@ -144,7 +144,7 @@ const RecipeCreate = ({ onEdit }) => {
                 }
                 if (ingredients) {
                   return setSubmitError({
-                    submitError: `Ингредиенты: ${
+                    submitError: `Продукты: ${
                       ingredients
                         .filter((item) => Object.keys(item).length)
                         .map((item) => {
@@ -179,7 +179,7 @@ const RecipeCreate = ({ onEdit }) => {
           <div className={styles.ingredients}>
             <div className={styles.ingredientsInputs}>
               <Input
-                label="Ингредиенты"
+                label="Продукты"
                 className={styles.ingredientsNameInput}
                 inputClassName={styles.ingredientsInput}
                 placeholder="Начните вводить название"
@@ -240,7 +240,7 @@ const RecipeCreate = ({ onEdit }) => {
               )}
             </div>
             <div className={styles.ingredientAdd} onClick={handleAddIngredient}>
-              Добавить ингредиент
+              Добавить продукт
             </div>
             {ingredientError && (
               <p className={cn(styles.error, styles.errorIngredient)}>

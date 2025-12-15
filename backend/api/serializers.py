@@ -135,7 +135,7 @@ class RecipeIngredientCreateSerializer(serializers.Serializer):
     def validate_id(self, value):
         if not Ingredient.objects.filter(id=value).exists():
             raise serializers.ValidationError(
-                f"Ингредиент с id={value} не существует."
+                f"Продукт с id={value} не существует."
             )
         return value
 
@@ -198,7 +198,7 @@ class RecipeUpdateSerializer(RecipeCreateSerializer):
     def validate_ingredients(self, value):
         if not value:
             raise serializers.ValidationError(
-                "Необходимо добавить хотя бы один ингредиент."
+                "Необходимо добавить хотя бы один продукт."
             )
         return validate_ingredients_uniqueness(value)
 
