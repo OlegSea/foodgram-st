@@ -368,8 +368,7 @@
     "pk": 1,
     "fields": {
       "user": 5,
-      "author": 2,
-      "created_at": "2024-02-07T10:00:00.000Z"
+      "author": 2
     }
   },
   {
@@ -377,8 +376,7 @@
     "pk": 2,
     "fields": {
       "user": 5,
-      "author": 3,
-      "created_at": "2024-02-07T10:15:00.000Z"
+      "author": 3
     }
   },
   {
@@ -386,8 +384,7 @@
     "pk": 3,
     "fields": {
       "user": 4,
-      "author": 2,
-      "created_at": "2024-02-07T11:30:00.000Z"
+      "author": 2
     }
   },
   {
