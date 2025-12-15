@@ -17,6 +17,7 @@
         python = pkgs.python3;
         pythonEnv = python.withPackages (p: [
           p.pandas
+          p.psycopg2-binary
         ]);
       in
       {
