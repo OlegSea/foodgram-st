@@ -23,9 +23,9 @@ from api.pagination import CustomPageNumberPagination
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (
     IngredientSerializer,
-    RecipeCreateSerializer,
-    RecipeListSerializer,
-    RecipeUpdateSerializer,
+    RecipeWriteSerializer,
+    RecipeDetailSerializer,
+
     SetAvatarSerializer,
     UserSerializer,
     UserWithRecipesSerializer,
@@ -190,11 +190,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return queryset
 
     def get_serializer_class(self):
-        if self.action == "create":
-            return RecipeCreateSerializer
-        elif self.action in ["update", "partial_update"]:
-            return RecipeUpdateSerializer
-        return RecipeListSerializer
+        if self.action in ["create", "update", "partial_update"]:
+            return RecipeWriteSerializer
+        return RecipeDetailSerializer
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

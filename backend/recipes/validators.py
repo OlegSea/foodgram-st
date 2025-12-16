@@ -21,7 +21,7 @@ def validate_ingredients_uniqueness(ingredients_data):
             "Необходимо добавить хотя бы один ингредиент."
         )
 
-    ingredient_ids = [item["id"] for item in ingredients_data]
+    ingredient_ids = [item["id"].id for item in ingredients_data]
     unique_ids = set(ingredient_ids)
 
     if len(ingredient_ids) != len(unique_ids):
