@@ -5,12 +5,6 @@ from djoser.serializers import (
 from rest_framework import serializers
 
 from api.fields import Base64ImageField
-from api.validators import (
-    validate_cooking_time,
-    validate_ingredient_amount,
-    validate_ingredients_uniqueness,
-    validate_username,
-)
 from recipes.models import (
     Favorite,
     Ingredient,
@@ -19,6 +13,10 @@ from recipes.models import (
     ShoppingCart,
     Subscription,
     User,
+)
+from recipes.validators import (
+    validate_ingredients_uniqueness,
+    validate_username,
 )
 
 
@@ -130,7 +128,7 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
 
 class RecipeIngredientCreateSerializer(serializers.Serializer):
     id = serializers.IntegerField()
-    amount = serializers.IntegerField(validators=[validate_ingredient_amount])
+    amount = serializers.IntegerField(min_value=1)
 
     def validate_id(self, value):
         if not Ingredient.objects.filter(id=value).exists():
@@ -144,7 +142,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
     ingredients = RecipeIngredientCreateSerializer(many=True)
     image = Base64ImageField()
     author = UserSerializer(read_only=True)
-    cooking_time = serializers.IntegerField(validators=[validate_cooking_time])
+    cooking_time = serializers.IntegerField(min_value=1)
 
     class Meta:
         model = Recipe
