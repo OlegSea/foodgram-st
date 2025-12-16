@@ -1,26 +1,42 @@
+from datetime import datetime
+
 from django.db.models import Sum
 
 from recipes.models import RecipeIngredient, ShoppingCart
 
 
 def generate_shopping_list(user):
-    shopping_cart_recipes = ShoppingCart.objects.filter(user=user).values_list(
-        "recipe_id", flat=True
-    )
-
     ingredients = (
-        RecipeIngredient.objects.filter(recipe_id__in=shopping_cart_recipes)
+        RecipeIngredient.objects.filter(recipe__shoppingcarts__user=user)
         .values("ingredient__name", "ingredient__measurement_unit")
         .annotate(total_amount=Sum("amount"))
         .order_by("ingredient__name")
     )
 
-    shopping_list_lines = ["Список покупок:\n"]
+    recipes = (
+        ShoppingCart.objects.filter(user=user)
+        .select_related("recipe__author")
+        .values("recipe__name", "recipe__author__username")
+        .distinct()
+        .order_by("recipe__name")
+    )
 
-    for item in ingredients:
-        name = item["ingredient__name"]
-        measurement_unit = item["ingredient__measurement_unit"]
-        amount = item["total_amount"]
-        shopping_list_lines.append(f"{name} ({measurement_unit}) — {amount}\n")
+    current_date = datetime.now().strftime("%d.%m.%Y")
 
-    return "".join(shopping_list_lines)
+    return "\n".join(
+        [
+            f"Список покупок от {current_date}",
+            "",
+            "Продукты:",
+            *[
+                f"{i + 1}. {item['ingredient__name'].capitalize()} ({item['ingredient__measurement_unit']}) — {item['total_amount']}"
+                for i, item in enumerate(ingredients)
+            ],
+            "",
+            "Рецепты:",
+            *[
+                f"• {recipe['recipe__name']} (автор: {recipe['recipe__author__username']})"
+                for recipe in recipes
+            ],
+        ]
+    )
