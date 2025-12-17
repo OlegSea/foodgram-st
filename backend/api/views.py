@@ -61,10 +61,6 @@ class UserViewSet(DjoserUserViewSet):
             return (IsAuthenticated(),)
         return super().get_permissions()
 
-    @action(detail=False, methods=("get",), url_path="me")
-    def me(self, request):
-        return super().me(request)
-
     @action(detail=False, methods=("put", "delete"), url_path="me/avatar")
     def avatar(self, request):
         user = request.user
@@ -116,7 +112,7 @@ class UserViewSet(DjoserUserViewSet):
         if user == author:
             raise ValidationError("Нельзя подписаться на самого себя.")
 
-        subscription, created = Subscription.objects.get_or_create(
+        _, created = Subscription.objects.get_or_create(
             user=user, author=author
         )
         if not created:
@@ -142,28 +138,31 @@ class RecipeViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPageNumberPagination
 
     @staticmethod
-    def _handle_user_recipe_relation(request, pk, model_class, error_messages):
+    def _handle_user_recipe_relation(request, pk, model_class):
+        location = (
+            "избранном" if model_class == Favorite else "списке покупок"
+        )
         user = request.user
-        relation_qs = model_class.objects.filter(user=user, recipe_id=pk)
-        relation_exists = relation_qs.exists()
 
         if request.method == "DELETE":
-            if not relation_exists:
-                raise Http404(error_messages["not_found"])
-
-            relation_qs.delete()
+            get_object_or_404(
+                model_class, user=user, recipe_id=pk
+            ).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-        if request.method == "POST":
-            if relation_exists:
-                raise ValidationError(error_messages["already_exists"])
-
-            recipe = get_object_or_404(Recipe, pk=pk)
-            model_class.objects.create(user=user, recipe=recipe)
-            serializer = RecipeMinifiedSerializer(
-                recipe, context={"request": request}
+        recipe = get_object_or_404(Recipe, pk=pk)
+        _, created = model_class.objects.get_or_create(
+            user=user, recipe=recipe
+        )
+        if not created:
+            raise ValidationError(
+                f"{model_class._meta.verbose_name}: "
+                f"Рецепт '{recipe.name}' уже в {location}."
             )
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        serializer = RecipeMinifiedSerializer(
+            recipe, context={"request": request}
+        )
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def get_queryset(self):
         queryset = Recipe.objects.select_related("author").prefetch_related(
@@ -203,13 +202,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         permission_classes=(IsAuthenticated,),
     )
     def favorite(self, request, pk=None):
-        error_messages = {
-            "not_found": "Рецепт не в избранном.",
-            "already_exists": "Рецепт уже в избранном.",
-        }
-        return self._handle_user_recipe_relation(
-            request, pk, Favorite, error_messages
-        )
+        return self._handle_user_recipe_relation(request, pk, Favorite)
 
     @action(
         detail=True,
@@ -217,41 +210,28 @@ class RecipeViewSet(viewsets.ModelViewSet):
         permission_classes=(IsAuthenticated,),
     )
     def shopping_cart(self, request, pk=None):
-        error_messages = {
-            "not_found": "Рецепт не в списке покупок.",
-            "already_exists": "Рецепт уже в списке покупок.",
-        }
-        return self._handle_user_recipe_relation(
-            request, pk, ShoppingCart, error_messages
-        )
+        return self._handle_user_recipe_relation(request, pk, ShoppingCart)
 
     @action(detail=True, methods=("get",), url_path="get-link")
     def get_link(self, request, pk=None):
         if not Recipe.objects.filter(pk=pk).exists():
-            raise Http404("Recipe not found")
+            raise Http404(f"Рецепт с id {pk} не найден")
 
         short_url_path = reverse(
-            "short_link_redirect", kwargs={"recipe_id": pk}
+            "short_link_redirect", args=[pk]
         )
 
-        full_url = request.build_absolute_uri(short_url_path)
-
-        response_data = {"short-link": full_url}
-
-        return Response(response_data, status=status.HTTP_200_OK)
+        return Response({
+            "short-link": request.build_absolute_uri(short_url_path)
+        }, status=status.HTTP_200_OK)
 
     @action(
         detail=False, methods=("get",), permission_classes=(IsAuthenticated,)
     )
     def download_shopping_cart(self, request):
-        user = request.user
-        shopping_list = generate_shopping_list(user)
-
-        response = FileResponse(
-            shopping_list,
-            as_attachment=True,
-            filename="shopping_list.txt",
-            content_type="text/plain",
-        )
-
-        return response
+        return FileResponse(
+                    generate_shopping_list(request.user),
+                    as_attachment=True,
+                    filename="shopping_list.txt",
+                    content_type="text/plain",
+                )
