@@ -14,9 +14,7 @@ def generate_shopping_list(user):
     )
 
     recipes = (
-        ShoppingCart.objects.filter(user=user)
-        .select_related("recipe__author")
-        .values("recipe__name", "recipe__author__username")
+        user.shoppingcarts.select_related("recipe__author")
         .distinct()
         .order_by("recipe__name")
     )
@@ -29,8 +27,8 @@ def generate_shopping_list(user):
             "",
             "Продукты:",
             *[
-                f"{i + 1}. {item['ingredient__name'].capitalize()} ({item['ingredient__measurement_unit']}) — {item['total_amount']}"
-                for i, item in enumerate(ingredients)
+                f"{i}. {item['ingredient__name'].capitalize()} ({item['ingredient__measurement_unit']}) — {item['total_amount']}"
+                for i, item in enumerate(ingredients, start=1)
             ],
             "",
             "Рецепты:",
