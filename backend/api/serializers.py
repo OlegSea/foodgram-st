@@ -111,12 +111,13 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
         return validate_ingredients_uniqueness(value)
 
     def validate(self, data):
-        if self.instance and 'ingredients' not in data:
+        if self.instance and "ingredients" not in data:
             raise serializers.ValidationError(
-                {"ingredients": "Поле ingredients обязательно при обновлении рецепта."}
+                {
+                    "ingredients": "Поле ingredients обязательно при обновлении рецепта."
+                }
             )
         return data
-
 
     def _save_ingredients(self, recipe, ingredients_data):
         recipe_ingredients = [

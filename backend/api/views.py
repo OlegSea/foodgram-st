@@ -1,26 +1,26 @@
 from django.db.models import Exists, OuterRef, Prefetch
-from django.http import FileResponse
+from django.http import FileResponse, Http404
 from django.shortcuts import get_object_or_404
-from django.http import Http404
 from django.urls import reverse
+from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet as DjoserUserViewSet
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import (
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
 )
 from rest_framework.response import Response
-from api.filters import RecipeFilter, IngredientFilter
+
+from api.filters import IngredientFilter, RecipeFilter
 from api.pagination import CustomPageNumberPagination
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (
     IngredientSerializer,
-    RecipeWriteSerializer,
     RecipeDetailSerializer,
     RecipeMinifiedSerializer,
+    RecipeWriteSerializer,
     SetAvatarSerializer,
     UserSerializer,
     UserWithRecipesSerializer,
@@ -103,16 +103,13 @@ class UserViewSet(DjoserUserViewSet):
         )
         return self.get_paginated_response(serializer.data)
 
-
     @action(detail=True, methods=("post", "delete"), url_path="subscribe")
     def subscribe(self, request, id=None):
         user = request.user
 
         if request.method == "DELETE":
             # валит тесты
-            get_object_or_404(
-                Subscription, user=user, author_id=id
-            ).delete()
+            get_object_or_404(Subscription, user=user, author_id=id).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
         author = get_object_or_404(User, id=id)
@@ -145,9 +142,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPageNumberPagination
 
     @staticmethod
-    def _handle_user_recipe_relation(
-        request, pk, model_class, error_messages
-    ):
+    def _handle_user_recipe_relation(request, pk, model_class, error_messages):
         user = request.user
         relation_qs = model_class.objects.filter(user=user, recipe_id=pk)
         relation_exists = relation_qs.exists()
@@ -210,7 +205,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def favorite(self, request, pk=None):
         error_messages = {
             "not_found": "Рецепт не в избранном.",
-            "already_exists": "Рецепт уже в избранном."
+            "already_exists": "Рецепт уже в избранном.",
         }
         return self._handle_user_recipe_relation(
             request, pk, Favorite, error_messages
@@ -224,7 +219,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def shopping_cart(self, request, pk=None):
         error_messages = {
             "not_found": "Рецепт не в списке покупок.",
-            "already_exists": "Рецепт уже в списке покупок."
+            "already_exists": "Рецепт уже в списке покупок.",
         }
         return self._handle_user_recipe_relation(
             request, pk, ShoppingCart, error_messages
@@ -256,7 +251,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             shopping_list,
             as_attachment=True,
             filename="shopping_list.txt",
-            content_type="text/plain"
+            content_type="text/plain",
         )
 
         return response

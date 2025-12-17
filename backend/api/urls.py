@@ -5,7 +5,7 @@ URL configuration for API app.
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from api.views import UserViewSet, IngredientViewSet, RecipeViewSet
+from api.views import IngredientViewSet, RecipeViewSet, UserViewSet
 
 app_name = "api"
 
