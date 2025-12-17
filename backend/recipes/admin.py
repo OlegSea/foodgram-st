@@ -13,16 +13,27 @@ from .models import (
 )
 
 
-@admin.register(Ingredient)
-class IngredientAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "measurement_unit", "recipes_count")
-    search_fields = ("name",)
-    list_filter = ("measurement_unit",)
-    ordering = ("name",)
+class RecipesCountMixin:
+    list_display = ("recipes_count",)
+    recipes_related_name = "recipes"
 
     @admin.display(description="Рецептов")
     def recipes_count(self, obj):
-        return obj.recipe_ingredients.count()
+        return getattr(obj, self.recipes_related_name).count()
+
+
+@admin.register(Ingredient)
+class IngredientAdmin(RecipesCountMixin, admin.ModelAdmin):
+    list_display = (
+        "id",
+        "name",
+        "measurement_unit",
+        *RecipesCountMixin.list_display,
+    )
+    recipes_related_name = "recipe_ingredients"
+    search_fields = ("name",)
+    list_filter = ("measurement_unit",)
+    ordering = ("name",)
 
 
 class RecipeIngredientInline(admin.TabularInline):
@@ -61,41 +72,36 @@ class RecipeAdmin(admin.ModelAdmin):
     @mark_safe
     def ingredients_display(self, obj):
         ingredients = obj.recipe_ingredients.select_related("ingredient").all()
-        if not ingredients:
-            return '<span style="color: #999;">Нет продуктов</span>'
-
-        ingredients_list = []
-        for recipe_ingredient in ingredients:
-            ingredient_name = recipe_ingredient.ingredient.name
-            amount = recipe_ingredient.amount
-            unit = recipe_ingredient.ingredient.measurement_unit
-            ingredients_list.append(f"{ingredient_name} ({amount} {unit})")
-
-        return "<br>".join(ingredients_list)
+        return "<br>".join(
+            [
+                f"{recipe_ingredient.ingredient.name} ({recipe_ingredient.amount} {recipe_ingredient.ingredient.measurement_unit})"
+                for recipe_ingredient in ingredients
+            ]
+        )
 
     @admin.display(description="Картинка")
     @mark_safe
     def image_display(self, obj):
         if obj.image:
             return f'<img src="{obj.image.url}" width="60" height="60" style="border-radius: 8px; object-fit: cover;" alt="Изображение рецепта">'
-        return '<span style="color: #999;">Нет изображения</span>'
+        return ""
 
 
 @admin.register(Favorite, ShoppingCart)
-class BaseUserRecipeAdmin(admin.ModelAdmin):
+class UserRecipeAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "recipe")
     search_fields = ("user__username", "recipe__name")
 
 
 @admin.register(User)
-class UserAdmin(BaseUserAdmin):
+class UserAdmin(RecipesCountMixin, BaseUserAdmin):
     list_display = (
         "id",
         "username",
         "full_name",
         "email",
         "avatar_display",
-        "recipes_count",
+        *RecipesCountMixin.list_display,
         "subscriptions_count",
         "subscribers_count",
     )
@@ -161,11 +167,7 @@ class UserAdmin(BaseUserAdmin):
     def avatar_display(self, obj):
         if obj.avatar:
             return f'<img src="{obj.avatar.url}" width="50" height="50" style="border-radius: 50%; object-fit: cover;" alt="Аватар {obj.username}">'
-        return '<span style="color: #999;">Нет аватара</span>'
-
-    @admin.display(description="Рецептов")
-    def recipes_count(self, obj):
-        return obj.recipes.count()
+        return ""
 
     @admin.display(description="Подписок")
     def subscriptions_count(self, obj):

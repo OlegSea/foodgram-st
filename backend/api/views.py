@@ -139,15 +139,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @staticmethod
     def _handle_user_recipe_relation(request, pk, model_class):
-        location = (
-            "избранном" if model_class == Favorite else "списке покупок"
-        )
+        location = "избранном" if model_class == Favorite else "списке покупок"
         user = request.user
 
         if request.method == "DELETE":
-            get_object_or_404(
-                model_class, user=user, recipe_id=pk
-            ).delete()
+            get_object_or_404(model_class, user=user, recipe_id=pk).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
         recipe = get_object_or_404(Recipe, pk=pk)
@@ -217,21 +213,20 @@ class RecipeViewSet(viewsets.ModelViewSet):
         if not Recipe.objects.filter(pk=pk).exists():
             raise Http404(f"Рецепт с id {pk} не найден")
 
-        short_url_path = reverse(
-            "short_link_redirect", args=[pk]
-        )
+        short_url_path = reverse("short_link_redirect", args=[pk])
 
-        return Response({
-            "short-link": request.build_absolute_uri(short_url_path)
-        }, status=status.HTTP_200_OK)
+        return Response(
+            {"short-link": request.build_absolute_uri(short_url_path)},
+            status=status.HTTP_200_OK,
+        )
 
     @action(
         detail=False, methods=("get",), permission_classes=(IsAuthenticated,)
     )
     def download_shopping_cart(self, request):
         return FileResponse(
-                    generate_shopping_list(request.user),
-                    as_attachment=True,
-                    filename="shopping_list.txt",
-                    content_type="text/plain",
-                )
+            generate_shopping_list(request.user),
+            as_attachment=True,
+            filename="shopping_list.txt",
+            content_type="text/plain",
+        )

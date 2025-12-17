@@ -112,14 +112,16 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
         return data
 
     def _save_ingredients(self, recipe, ingredients_data):
-        RecipeIngredient.objects.bulk_create([
-            RecipeIngredient(
-                recipe=recipe,
-                ingredient_id=ingredient_data["id"].id,
-                amount=ingredient_data["amount"],
-            )
-            for ingredient_data in ingredients_data
-        ])
+        RecipeIngredient.objects.bulk_create(
+            [
+                RecipeIngredient(
+                    recipe=recipe,
+                    ingredient_id=ingredient_data["id"].id,
+                    amount=ingredient_data["amount"],
+                )
+                for ingredient_data in ingredients_data
+            ]
+        )
 
     @transaction.atomic
     def create(self, validated_data):
@@ -194,7 +196,9 @@ class RecipeMinifiedSerializer(serializers.ModelSerializer):
 
 class UserWithRecipesSerializer(UserSerializer):
     recipes = serializers.SerializerMethodField()
-    recipes_count = serializers.IntegerField(source="recipes.count", read_only=True)
+    recipes_count = serializers.IntegerField(
+        source="recipes.count", read_only=True
+    )
 
     class Meta:
         model = User
