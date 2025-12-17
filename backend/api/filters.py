@@ -12,7 +12,7 @@ class RecipeFilter(django_filters.FilterSet):
 
     class Meta:
         model = Recipe
-        fields = ["is_favorited", "is_in_shopping_cart", "author"]
+        fields = ("is_favorited", "is_in_shopping_cart", "author")
 
     def filter_is_favorited(self, queryset, name, value):
         user = self.request.user
@@ -44,4 +44,4 @@ class IngredientFilter(django_filters.FilterSet):
 
     class Meta:
         model = Ingredient
-        fields = ["name"]
+        fields = ("name",)

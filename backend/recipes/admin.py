@@ -51,7 +51,7 @@ class RecipeAdmin(admin.ModelAdmin):
     list_filter = ("pub_date", "author")
     readonly_fields = ("pub_date",)
     ordering = ("-pub_date",)
-    inlines = [RecipeIngredientInline]
+    inlines = (RecipeIngredientInline,)
 
     @admin.display(description="В избранном")
     def get_favorites_count(self, obj):

@@ -20,19 +20,19 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-urlpatterns = [
+urlpatterns = (
     path("admin/", admin.site.urls),
     path("api/", include("api.urls")),
     path("", include("recipes.urls")),
-]
+)
 
 if settings.DEBUG:
-    urlpatterns += static(
+    urlpatterns += tuple(static(
         settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
-    )
-    urlpatterns += static(
+    ))
+    urlpatterns += tuple(static(
         settings.STATIC_URL, document_root=settings.STATIC_ROOT
-    )
+    ))
 
 admin.site.site_header = "Foodgram Administration"
 admin.site.site_title = "Foodgram Admin"

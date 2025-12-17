@@ -57,15 +57,15 @@ class UserViewSet(DjoserUserViewSet):
         return queryset
 
     def get_permissions(self):
-        if self.action in ["me", "avatar", "subscriptions", "subscribe"]:
-            return [IsAuthenticated()]
+        if self.action in ("me", "avatar", "subscriptions", "subscribe"):
+            return (IsAuthenticated(),)
         return super().get_permissions()
 
-    @action(detail=False, methods=["get"], url_path="me")
+    @action(detail=False, methods=("get",), url_path="me")
     def me(self, request):
         return super().me(request)
 
-    @action(detail=False, methods=["put", "delete"], url_path="me/avatar")
+    @action(detail=False, methods=("put", "delete"), url_path="me/avatar")
     def avatar(self, request):
         user = request.user
 
@@ -83,7 +83,7 @@ class UserViewSet(DjoserUserViewSet):
         user.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @action(detail=False, methods=["get"], url_path="subscriptions")
+    @action(detail=False, methods=("get",), url_path="subscriptions")
     def subscriptions(self, request):
         subscriptions = (
             User.objects.filter(author_subscriptions__user=request.user)
@@ -104,7 +104,7 @@ class UserViewSet(DjoserUserViewSet):
         return self.get_paginated_response(serializer.data)
 
 
-    @action(detail=True, methods=["post", "delete"], url_path="subscribe")
+    @action(detail=True, methods=("post", "delete"), url_path="subscribe")
     def subscribe(self, request, id=None):
         user = request.user
 
@@ -134,13 +134,13 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = (DjangoFilterBackend,)
     filterset_class = IngredientFilter
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
-    permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
+    permission_classes = (IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly)
     filterset_class = RecipeFilter
     pagination_class = CustomPageNumberPagination
 
@@ -195,7 +195,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return queryset
 
     def get_serializer_class(self):
-        if self.action in ["create", "update", "partial_update"]:
+        if self.action in ("create", "update", "partial_update"):
             return RecipeWriteSerializer
         return RecipeDetailSerializer
 
@@ -204,8 +204,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(
         detail=True,
-        methods=["post", "delete"],
-        permission_classes=[IsAuthenticated],
+        methods=("post", "delete"),
+        permission_classes=(IsAuthenticated,),
     )
     def favorite(self, request, pk=None):
         error_messages = {
@@ -218,8 +218,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(
         detail=True,
-        methods=["post", "delete"],
-        permission_classes=[IsAuthenticated],
+        methods=("post", "delete"),
+        permission_classes=(IsAuthenticated,),
     )
     def shopping_cart(self, request, pk=None):
         error_messages = {
@@ -230,7 +230,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             request, pk, ShoppingCart, error_messages
         )
 
-    @action(detail=True, methods=["get"], url_path="get-link")
+    @action(detail=True, methods=("get",), url_path="get-link")
     def get_link(self, request, pk=None):
         if not Recipe.objects.filter(pk=pk).exists():
             raise Http404("Recipe not found")
@@ -246,7 +246,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return Response(response_data, status=status.HTTP_200_OK)
 
     @action(
-        detail=False, methods=["get"], permission_classes=[IsAuthenticated]
+        detail=False, methods=("get",), permission_classes=(IsAuthenticated,)
     )
     def download_shopping_cart(self, request):
         user = request.user
