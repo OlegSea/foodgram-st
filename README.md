@@ -46,6 +46,7 @@ Foodgram — веб-приложение для публикации рецеп�
 ### Если установлен `just`:
 ```bash
 git clone https://github.com/olegsea/foodgram-st
+cd foodgram-st
 
 just build # собрать контейнеры из исходников
 just run # использовать контейнеры с Docker Hub
@@ -56,8 +57,7 @@ just prune # почистить лишние volume
 ### Если нет:
 ```bash
 git clone https://github.com/olegsea/foodgram-st
-
-cd infra/
+cd foodgram-st/infra
 
 # собрать контейнеры из исходников
 docker-compose -f docker-compose.local.yml up --build
@@ -72,7 +72,8 @@ docker-compose up -d
 Для остальных рекомендую использовать [uv](https://docs.astral.sh/uv/).
 
 ```bash
-cd backend/
+git clone https://github.com/olegsea/foodgram-st
+cd foodgram-st/backend
 
 # Создание виртуального окружения и установка зависимостей
 uv sync
