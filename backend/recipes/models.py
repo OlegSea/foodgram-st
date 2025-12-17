@@ -120,9 +120,7 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="recipes",
         verbose_name="Автор",
-        db_index=True,
     )
     name = models.CharField(
         max_length=256,
@@ -149,6 +147,7 @@ class Recipe(models.Model):
         verbose_name = "Рецепт"
         verbose_name_plural = "Рецепты"
         ordering = ("-pub_date",)
+        default_related_name = "recipes"
 
     def __str__(self):
         return self.name
@@ -158,13 +157,11 @@ class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name="recipe_ingredients",
         verbose_name="Рецепт",
     )
     ingredient = models.ForeignKey(
         Ingredient,
         on_delete=models.CASCADE,
-        related_name="recipe_ingredients",
         verbose_name="Продукт",
     )
     amount = models.PositiveIntegerField(
@@ -175,6 +172,7 @@ class RecipeIngredient(models.Model):
     class Meta:
         verbose_name = "Продукт в рецепте"
         verbose_name_plural = "Продукты в рецептах"
+        default_related_name = "recipe_ingredients"
         constraints = (
             models.UniqueConstraint(
                 fields=(
@@ -189,30 +187,29 @@ class RecipeIngredient(models.Model):
         return f"{self.ingredient.name} в {self.recipe.name}"
 
 
-class BaseUserRecipeRelation(models.Model):
+class UserRecipeRelation(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="%(class)ss",
         verbose_name="Пользователь",
         db_index=True,
     )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name="%(class)ss",
         verbose_name="Рецепт",
     )
 
     class Meta:
         abstract = True
+        default_related_name = "%(class)ss"
         constraints = (
             models.UniqueConstraint(
                 fields=(
                     "user",
                     "recipe",
                 ),
-                name="unique_%(class)",
+                name="unique_%(class)s",
             ),
         )
 
@@ -220,13 +217,13 @@ class BaseUserRecipeRelation(models.Model):
         return f"{self.user.username} добавил {self.recipe.name} в {self.Meta.verbose_name.lower()}"
 
 
-class Favorite(BaseUserRecipeRelation):
-    class Meta:
+class Favorite(UserRecipeRelation):
+    class Meta(UserRecipeRelation.Meta):
         verbose_name = "Избранное"
         verbose_name_plural = "Избранное"
 
 
-class ShoppingCart(BaseUserRecipeRelation):
-    class Meta:
+class ShoppingCart(UserRecipeRelation):
+    class Meta(UserRecipeRelation.Meta):
         verbose_name = "Список покупок"
         verbose_name_plural = "Списки покупок"
