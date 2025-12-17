@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.db.models import Sum
 
-from recipes.models import RecipeIngredient, ShoppingCart
+from recipes.models import RecipeIngredient
 
 
 def generate_shopping_list(user):

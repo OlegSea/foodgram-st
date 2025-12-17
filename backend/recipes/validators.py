@@ -14,7 +14,9 @@ def validate_ingredients_uniqueness(ingredients_data):
 
     if len(ingredient_ids) != len(unique_ids):
         duplicates = [
-            str(id) for id, count in Counter(ingredient_ids).items() if count > 1
+            str(id)
+            for id, count in Counter(ingredient_ids).items()
+            if count > 1
         ]
         raise serializers.ValidationError(
             f"Ингредиенты не должны повторяться. Дубли: {duplicates}"
