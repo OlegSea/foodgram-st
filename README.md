@@ -65,6 +65,37 @@ docker-compose -f docker-compose.local.yml up --build
 docker-compose up -d
 ```
 
+## Management команды
+
+### load_ingredients
+Кастомная команда для загрузки ингредиентов из JSON файла в базу данных.
+
+```bash
+python manage.py load_ingredients [путь_к_файлу]
+```
+
+**Параметры:**
+- `путь_к_файлу` (опционально) — путь к JSON файлу с ингредиентами. По умолчанию: `data/ingredients.json`
+
+**Формат JSON:**
+```json
+[
+  {
+    "name": "абрикосовое варенье",
+    "measurement_unit": "г"
+  },
+  {
+    "name": "абрикосовое пюре",
+    "measurement_unit": "г"
+  }
+]
+```
+
+**Особенности:**
+- Использует `get_or_create`, поэтому безопасна для повторного запуска
+- Не создаёт дубликаты (проверка по паре `name` + `measurement_unit`)
+- Выводит статистику: сколько ингредиентов создано и сколько пропущено
+
 ## Локальная разработка
 
 Для пользователей NixOS в папке `backend` есть flake.nix файл, благодаря которому можно запустить Dev Shell (`nix develop` в папке `backend`).
@@ -80,8 +111,8 @@ uv sync
 # Применение миграций
 uv run python manage.py migrate
 
-# Импорт продуктов из фикстуры
-uv run python manage.py loaddata data/ingredients.json
+# Загрузка ингредиентов из JSON файла
+uv run python manage.py load_ingredients ../data/ingredients.json
 
 # Импорт тестовых данных из фикстуры
 uv run python manage.py loaddata data/test_data.json

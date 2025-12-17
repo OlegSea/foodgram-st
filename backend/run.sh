@@ -10,7 +10,7 @@ if [ "$LOAD_TEST_DATA" = "True" ]; then
     cp -r data/recipes media/
 fi
 
-python manage.py loaddata data/ingredients.json
+python manage.py load_ingredients /data/ingredients.json
 
 if [ "$LOAD_TEST_DATA" = "True" ]; then
     python manage.py loaddata data/test_data.json
