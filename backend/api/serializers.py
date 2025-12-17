@@ -23,15 +23,7 @@ class UserSerializer(DjoserUserSerializer):
 
     class Meta:
         model = User
-        fields = (
-            "id",
-            "email",
-            "username",
-            "first_name",
-            "last_name",
-            "is_subscribed",
-            "avatar",
-        )
+        fields = (*DjoserUserSerializer.Meta.fields, "is_subscribed", "avatar")
         read_only_fields = fields
 
     def get_is_subscribed(self, user):
@@ -120,15 +112,14 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
         return data
 
     def _save_ingredients(self, recipe, ingredients_data):
-        recipe_ingredients = [
+        RecipeIngredient.objects.bulk_create([
             RecipeIngredient(
                 recipe=recipe,
                 ingredient_id=ingredient_data["id"].id,
                 amount=ingredient_data["amount"],
             )
             for ingredient_data in ingredients_data
-        ]
-        RecipeIngredient.objects.bulk_create(recipe_ingredients)
+        ])
 
     @transaction.atomic
     def create(self, validated_data):
@@ -141,12 +132,10 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         ingredients_data = validated_data.pop("ingredients")
 
-        instance = super().update(instance, validated_data)
-
         instance.recipe_ingredients.all().delete()
         self._save_ingredients(instance, ingredients_data)
 
-        return instance
+        return super().update(instance, validated_data)
 
     def to_representation(self, instance):
         return RecipeDetailSerializer(instance, context=self.context).data
@@ -205,11 +194,11 @@ class RecipeMinifiedSerializer(serializers.ModelSerializer):
 
 class UserWithRecipesSerializer(UserSerializer):
     recipes = serializers.SerializerMethodField()
-    recipes_count = serializers.SerializerMethodField()
+    recipes_count = serializers.IntegerField(source="recipes.count", read_only=True)
 
     class Meta:
         model = User
-        fields = UserSerializer.Meta.fields + ("recipes", "recipes_count")
+        fields = (*UserSerializer.Meta.fields, "recipes", "recipes_count")
         read_only_fields = fields
 
     def get_recipes(self, obj):
@@ -230,6 +219,3 @@ class UserWithRecipesSerializer(UserSerializer):
         return RecipeMinifiedSerializer(
             recipes, many=True, context=self.context
         ).data
-
-    def get_recipes_count(self, obj):
-        return obj.recipes.count()
